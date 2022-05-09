@@ -22,7 +22,7 @@ public class TaskRepositoryInMemoryImpl implements TaskRepository {
     }
 
 
-    private TaskRepositoryInMemoryImpl() {
+    public TaskRepositoryInMemoryImpl() {
         mTasks = new ArrayList<>();
 
         Task myTask = new Task("Empty the trash");
@@ -33,7 +33,7 @@ public class TaskRepositoryInMemoryImpl implements TaskRepository {
         mTasks.add(new Task("Call parents"));
         myTask = new Task("Do Android programming");
         myTask.setDescription("Nobody said it would be easy!");
-        myTask.setDone(false);
+        myTask.setDone(true);
         mTasks.add(myTask);
 
 //        for (int i=0; i<40; i++)

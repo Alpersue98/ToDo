@@ -13,4 +13,5 @@ public interface TaskRepository {
     void deleteFinishedTasks();
 
     // TODO: add methods for adding new or updating existing tasks
+
 }
