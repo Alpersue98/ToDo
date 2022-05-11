@@ -2,82 +2,83 @@ package com.example.todo;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import java.text.DateFormat;
-import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     TextView textView;
-    TextView taskTest;
     EditText editName;
     EditText editDesc;
     CheckBox doneBox;
-    Button saveButton;
-    TaskRepositoryInMemoryImpl taskList = new TaskRepositoryInMemoryImpl();
-    List myTaskList = taskList.loadTasks();
-    Task myTask = (Task) myTaskList.get(myTaskList.size()-1);
+
+    //Create list of tasks
+    TaskRepositoryInMemoryImpl taskRepo = new TaskRepositoryInMemoryImpl();
+    List<Task> taskList = taskRepo.loadTasks();
+    //Get last task from list
+    Task currentTask = (Task) taskList.get(taskList.size()-1);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        editName = (EditText) findViewById(R.id.editName);
-        editDesc = (EditText) findViewById(R.id.editDescription);
-        doneBox = (CheckBox) findViewById(R.id.checkBox);
-
-        //taskTest = (TextView) findViewById(R.id.taskTest);
+        //TODO: Adjust font size so text always fits in views
 
         //Task Name
-        textView = (TextView) findViewById(R.id.textView);
+        textView = (TextView) findViewById(R.id.nameView);
         textView.setText("Task");
-        editName.setText(myTask.getShortName());
+        editName = (EditText) findViewById(R.id.editName);
+        //Get and display task name
+        editName.setText(currentTask.getShortName());
 
         //Description
-        textView = (TextView) findViewById(R.id.textView2);
+        textView = (TextView) findViewById(R.id.descView);
         textView.setText("Description");
-        editDesc.setText(myTask.getDescription());
+        editDesc = (EditText) findViewById(R.id.editDescription);
+        //Get and display task description
+        editDesc.setText(currentTask.getDescription());
 
         //CreationDate
-        textView = (TextView) findViewById(R.id.textView3);
+        textView = (TextView) findViewById(R.id.dateView);
         textView.setText("Creation Date");
-
         textView = (TextView) findViewById(R.id.text_Date);
-        textView.setText(DateFormat.getDateInstance().format(myTask.getCreationDate()));
+        //Get and display creation date
+        textView.setText(DateFormat.getDateInstance().format(currentTask.getCreationDate()));
 
         //Done
-        textView = (TextView) findViewById(R.id.textViewDone);
+        textView = (TextView) findViewById(R.id.doneView);
         textView.setText("Done");
-        doneBox.setChecked(myTask.isDone());
+        doneBox = (CheckBox) findViewById(R.id.checkBox);
+        //Set box as checked is task is saved as done
+        doneBox.setChecked(currentTask.isDone());
 
 
     }
 
+    //Save changes to current task
+    //Called by onClick of saveButton
     public void saveTask(View view) {
-        Task myTask = new Task(editName.getText().toString());
-        myTask.setDescription(editDesc.getText().toString());
-        myTask.setDone(doneBox.isChecked());
+        //create new Task with attributes from layout
+        Task newTask = new Task(editName.getText().toString());
+        newTask.setDescription(editDesc.getText().toString());
+        newTask.setDone(doneBox.isChecked());
+        //!TODO Creation date should be unchanged when editing tasks
 
-        /*taskTest.setText("");
-        taskTest.append("Name: " + myTask.getShortName() + "\n");
-        taskTest.append("Desc: " + myTask.getDescription() + "\n");
-        taskTest.append("Done: " + myTask.isDone() + "\n");*/
+        //remove last task in list
+        taskList.remove(taskList.size()-1);
+        //replace with updated task by appending to list
+        taskList.add(newTask);
 
-        myTaskList.remove(myTaskList.size()-1);
-        myTaskList.add(myTask);
-
-
+        //Show attributes of last task in list (for testing)
         TextView lastTaskView = (TextView) findViewById(R.id.LastTask);
         lastTaskView.setText("Last Task in List: \n");
-        Task lastTask = (Task) myTaskList.get(myTaskList.size()-1);
+        Task lastTask = (Task) taskList.get(taskList.size()-1);
         lastTaskView.append("Name: " + lastTask.getShortName() + "\n");
         lastTaskView.append("Desc: " + lastTask.getDescription() + "\n");
         lastTaskView.append("Done: " + lastTask.isDone() + "\n");

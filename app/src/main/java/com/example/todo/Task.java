@@ -6,6 +6,7 @@ import java.util.GregorianCalendar;
 
 /**
  * Created by thorsten on 21.03.20.
+ * Task class containing Id, task Name, description, creation date, and completion status
  */
 
 public class Task {
@@ -25,6 +26,7 @@ public class Task {
         this.mCreationDate = GregorianCalendar.getInstance().getTime();
     }
 
+    //Getters and setters for task attributes
     public int getId() {
         return this.mId;
     }

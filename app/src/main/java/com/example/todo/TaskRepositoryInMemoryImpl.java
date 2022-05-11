@@ -5,6 +5,7 @@ import java.util.List;
 
 /**
  * Created by thorsten on 23.03.20.
+ *
  */
 
 public class TaskRepositoryInMemoryImpl implements TaskRepository {
@@ -25,6 +26,7 @@ public class TaskRepositoryInMemoryImpl implements TaskRepository {
     public TaskRepositoryInMemoryImpl() {
         mTasks = new ArrayList<>();
 
+        //Fill list with task
         Task myTask = new Task("Empty the trash");
         myTask.setDescription("Someone has to get the dirty jobs done...");
         myTask.setDone(true);
@@ -46,6 +48,7 @@ public class TaskRepositoryInMemoryImpl implements TaskRepository {
     }
 
     @Override
+    //Find and delete finished tasks from list
     public void deleteFinishedTasks() {
         for (int i=0; i<mTasks.size(); i++) {
             Task task = mTasks.get(i);
