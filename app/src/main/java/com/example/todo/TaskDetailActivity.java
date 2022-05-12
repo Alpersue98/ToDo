@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.text.DateFormat;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class TaskDetailActivity extends AppCompatActivity {
 
     TextView textView;
     EditText editName;

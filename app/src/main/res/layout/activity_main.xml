@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#00FF2222"
-    tools:context=".MainActivity">
+    tools:context=".TaskDetailActivity">
 
     <TextView
         android:id="@+id/nameView"
@@ -14,6 +14,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:text="TextView"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -32,6 +33,7 @@
         android:minHeight="48dp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -41,6 +43,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="52dp"
         android:text="TextView"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nameView" />
@@ -56,6 +59,7 @@
         android:inputType="textPersonName"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/editName"
         tools:ignore="MissingConstraints" />
 
@@ -66,6 +70,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="56dp"
         android:text="TextView"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/descView" />
 
@@ -77,6 +82,7 @@
         android:layout_marginEnd="128dp"
         android:text="Date"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/editDescription" />
 
     <TextView
@@ -86,6 +92,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="43dp"
         android:text="TextView"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dateView" />
@@ -97,6 +104,7 @@
         android:layout_marginTop="28dp"
         android:layout_marginEnd="116dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/text_Date" />
 
     <Button
@@ -117,7 +125,7 @@
         app:strokeColor="#FF9800"
         tools:ignore="TextContrastCheck" />
 
-   <!--
+    <!--
    <TextView
         android:id="@+id/taskTest"
         android:layout_width="284dp"
@@ -140,5 +148,12 @@
         android:text="Last Task in List: \n"
         app:layout_constraintBottom_toTopOf="@+id/saveButton"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="120dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
