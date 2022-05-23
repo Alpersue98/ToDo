@@ -17,6 +17,8 @@ public class TaskDetailActivity extends AppCompatActivity {
     EditText editDesc;
     CheckBox doneBox;
 
+    public static final String EXTRA_TASK_NAME = "EXTRA_TASK_NAME";
+
     //Create list of tasks
     TaskRepositoryInMemoryImpl taskRepo = new TaskRepositoryInMemoryImpl();
     List<Task> taskList = taskRepo.loadTasks();
@@ -65,15 +67,14 @@ public class TaskDetailActivity extends AppCompatActivity {
     //Called by onClick of saveButton
     public void saveTask(View view) {
         //create new Task with attributes from layout
-        Task newTask = new Task(editName.getText().toString());
-        newTask.setDescription(editDesc.getText().toString());
-        newTask.setDone(doneBox.isChecked());
-        //!TODO Creation date should be unchanged when editing tasks
+        currentTask.setShortName(editName.getText().toString());
+        currentTask.setDescription(editDesc.getText().toString());
+        currentTask.setDone(doneBox.isChecked());
 
         //remove last task in list
         taskList.remove(taskList.size()-1);
         //replace with updated task by appending to list
-        taskList.add(newTask);
+        taskList.add(currentTask);
 
         //Show attributes of last task in list (for testing)
         TextView lastTaskView = (TextView) findViewById(R.id.LastTask);
