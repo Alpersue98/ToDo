@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.todo.databinding.TaskListItemBinding;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -29,13 +31,13 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
     }
 
     private TaskSelectionListener listener;
-    private List<Task> tasks;
+    private ArrayList<Task> tasks;
 
     public TaskListAdapter(TaskSelectionListener listener) {
         this.listener = listener;
     }
 
-    public void setTasks(List<Task> tasks) {
+    public void setTasks(ArrayList<Task> tasks) {
         this.tasks = tasks;
         notifyDataSetChanged();
     }

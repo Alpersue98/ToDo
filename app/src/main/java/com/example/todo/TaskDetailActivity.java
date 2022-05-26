@@ -12,12 +12,12 @@ import java.util.List;
 
 public class TaskDetailActivity extends AppCompatActivity {
 
+    public static final String EXTRA_TASK_NAME = "EXTRA_TASK_NAME";
+
     TextView textView;
     EditText editName;
     EditText editDesc;
     CheckBox doneBox;
-
-    public static final String EXTRA_TASK_NAME = "EXTRA_TASK_NAME";
 
     //Create list of tasks
     TaskRepositoryInMemoryImpl taskRepo = new TaskRepositoryInMemoryImpl();
