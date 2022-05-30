@@ -1,6 +1,9 @@
 package com.example.todo;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
@@ -12,7 +15,7 @@ import java.util.List;
 
 public class TaskDetailActivity extends AppCompatActivity {
 
-    public static final String EXTRA_TASK_NAME = "EXTRA_TASK_NAME";
+    public static final String EXTRA_TASK_ID = "EXTRA_TASK_ID";
 
     TextView textView;
     EditText editName;
@@ -22,6 +25,8 @@ public class TaskDetailActivity extends AppCompatActivity {
     //Create list of tasks
     TaskRepositoryInMemoryImpl taskRepo = new TaskRepositoryInMemoryImpl();
     List<Task> taskList = taskRepo.loadTasks();
+
+
     //Get last task from list
     Task currentTask = (Task) taskList.get(taskList.size()-1);
 
@@ -29,6 +34,21 @@ public class TaskDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Intent intent = getIntent();
+        int taskID = intent.getIntExtra("EXTRA_TASK_ID", 0);
+
+        TextView lastTaskView = (TextView) findViewById(R.id.LastTask);
+        lastTaskView.append("ExtraID: " + taskID + "\n");
+
+        for (int i = 0; i < taskList.size(); i++){
+            Task tempTask = taskList.get(i);
+            lastTaskView.append("tempTask: " + tempTask.getShortName() + "\n");
+            if (taskID == tempTask.getId()){
+                lastTaskView.append("tempTaskID: " + tempTask.getId() + "\n");
+                currentTask = tempTask;
+            }
+        }
 
         //TODO: Adjust font size so text always fits in views
 
