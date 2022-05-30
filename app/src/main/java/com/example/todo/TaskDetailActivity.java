@@ -12,10 +12,11 @@ import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.util.List;
+import java.util.Objects;
 
 public class TaskDetailActivity extends AppCompatActivity {
 
-    public static final String EXTRA_TASK_ID = "EXTRA_TASK_ID";
+    public static final String EXTRA_TASK_NAME = "EXTRA_TASK_NAME";
 
     TextView textView;
     EditText editName;
@@ -27,8 +28,9 @@ public class TaskDetailActivity extends AppCompatActivity {
     List<Task> taskList = taskRepo.loadTasks();
 
 
-    //Get last task from list
-    Task currentTask = (Task) taskList.get(taskList.size()-1);
+    Task currentTask;
+    int currentTaskPos;
+    boolean addTaskMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,19 +38,31 @@ public class TaskDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Intent intent = getIntent();
-        int taskID = intent.getIntExtra("EXTRA_TASK_ID", 0);
+        String extraTaskName = intent.getStringExtra("EXTRA_TASK_NAME");
 
         TextView lastTaskView = (TextView) findViewById(R.id.LastTask);
-        lastTaskView.append("ExtraID: " + taskID + "\n");
+        lastTaskView.append("ExtraName: " + extraTaskName + "\n");
 
-        for (int i = 0; i < taskList.size(); i++){
-            Task tempTask = taskList.get(i);
-            lastTaskView.append("tempTask: " + tempTask.getShortName() + "\n");
-            if (taskID == tempTask.getId()){
-                lastTaskView.append("tempTaskID: " + tempTask.getId() + "\n");
-                currentTask = tempTask;
+
+        if (Objects.equals(extraTaskName, null)){
+            currentTask = new Task("");
+            currentTaskPos = taskList.size();
+            addTaskMode = true;
+        }
+        else {
+            for (int i = 0; i < taskList.size(); i++){
+                Task tempTask = taskList.get(i);
+                lastTaskView.append("tempTask: " + tempTask.getShortName() + "\n");
+                //TODO: Problems with same task name, should use ID instead
+                if (Objects.equals(extraTaskName, tempTask.getShortName())){
+                    lastTaskView.append("tempTaskID: " + tempTask.getShortName() + "\n");
+                    currentTask = tempTask;
+                    currentTaskPos = i;
+
+                }
             }
         }
+
 
         //TODO: Adjust font size so text always fits in views
 
@@ -86,20 +100,24 @@ public class TaskDetailActivity extends AppCompatActivity {
     //Save changes to current task
     //Called by onClick of saveButton
     public void saveTask(View view) {
+
         //create new Task with attributes from layout
         currentTask.setShortName(editName.getText().toString());
         currentTask.setDescription(editDesc.getText().toString());
         currentTask.setDone(doneBox.isChecked());
 
-        //remove last task in list
-        taskList.remove(taskList.size()-1);
-        //replace with updated task by appending to list
-        taskList.add(currentTask);
+        if(addTaskMode == true){
+            taskList.add(currentTaskPos, currentTask);
+        }
+        else {
+            taskList.set(currentTaskPos, currentTask);
+        }
+
 
         //Show attributes of last task in list (for testing)
         TextView lastTaskView = (TextView) findViewById(R.id.LastTask);
-        lastTaskView.setText("Last Task in List: \n");
-        Task lastTask = (Task) taskList.get(taskList.size()-1);
+        lastTaskView.setText("Current Task: \n");
+        Task lastTask = (Task) taskList.get(currentTaskPos);
         lastTaskView.append("Name: " + lastTask.getShortName() + "\n");
         lastTaskView.append("Desc: " + lastTask.getDescription() + "\n");
         lastTaskView.append("Done: " + lastTask.isDone() + "\n");

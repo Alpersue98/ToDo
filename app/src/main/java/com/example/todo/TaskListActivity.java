@@ -47,19 +47,17 @@ public class  TaskListActivity extends AppCompatActivity implements TaskListAdap
     }
 
     public void addNewTask() {
-
-        //String taskName = binding.editTextTaskName.getText().toString();
-        Snackbar.make(findViewById(android.R.id.content).getRootView(), "New Task has been added! ", Snackbar.LENGTH_SHORT).show();
-        //tasks.add(new Task(taskName));
-        //adapter.notifyItemInserted(tasks.size()-1);
-        //binding.editTextTaskName.setText("");
+        //Snackbar.make(findViewById(android.R.id.content).getRootView(), "New Task has been added! ", Snackbar.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, TaskDetailActivity.class);
+        intent.putExtra(TaskDetailActivity.EXTRA_TASK_NAME, (String) null);
+        startActivity(intent);
     }
 
 
     @Override
     public void onTaskSelected(Task task) {
         Intent intent = new Intent(this, TaskDetailActivity.class);
-        intent.putExtra(TaskDetailActivity.EXTRA_TASK_ID, task.getId());
+        intent.putExtra(TaskDetailActivity.EXTRA_TASK_NAME, task.getShortName());
         startActivity(intent);
 
     }
