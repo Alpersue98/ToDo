@@ -1,5 +1,7 @@
 package com.example.todo;
 
+import androidx.room.Entity;
+
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -8,7 +10,7 @@ import java.util.GregorianCalendar;
  * Created by thorsten on 21.03.20.
  * Task class containing Id, task Name, description, creation date, and completion status
  */
-
+@Entity
 public class Task {
 
     // simple ID generator
@@ -17,7 +19,7 @@ public class Task {
     private int mId;
     private String mShortName;
     private String mDescription;
-    private Date mCreationDate;
+    private Date mCreationDate; // zum Speichern in Room: Converter annotation
     private boolean mDone;
 
     public Task(String shortName) {
@@ -29,6 +31,9 @@ public class Task {
     //Getters and setters for task attributes
     public int getId() {
         return this.mId;
+    }
+
+    public void setId(int id) {this.mId = id;
     }
 
     public String getShortName() {

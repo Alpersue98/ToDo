@@ -9,6 +9,8 @@ import java.util.List;
 
 
 public interface TaskRepository {
+    //soll auf TaskRepoitoryInMemoryImpl zugreifen, von beiden Aktivitäten verwendet werden
+    //Intentfilter in Android.xml
 
     List<Task> loadTasks();
 

@@ -7,6 +7,7 @@ import androidx.room.RoomOpenHelper;
 import androidx.room.RoomOpenHelper.Delegate;
 //import androidx.room.RoomOpenHelper.ValidationResult;
 //import androidx.room.migration.AutoMigrationSpec;
+import androidx.room.migration.AutoMigrationSpec;
 import androidx.room.migration.Migration;
 import androidx.room.util.DBUtil;
 import androidx.room.util.TableInfo;
@@ -27,7 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-/*
+
 @SuppressWarnings({"unchecked", "deprecation"})
 public final class AppDatabase_Impl extends AppDatabase {
     private volatile TasksDao _tasksDao;
@@ -37,14 +38,14 @@ public final class AppDatabase_Impl extends AppDatabase {
         final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(configuration, new RoomOpenHelper.Delegate(1) {
             @Override
             public void createAllTables(SupportSQLiteDatabase _db) {
-                _db.execSQL("CREATE TABLE IF NOT EXISTS `places` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT)");
+                _db.execSQL("CREATE TABLE IF NOT EXISTS `tasks` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT)");
                 _db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
                 _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '77934c7868196355f04d7dee267d73f9')");
             }
 
             @Override
             public void dropAllTables(SupportSQLiteDatabase _db) {
-                _db.execSQL("DROP TABLE IF EXISTS `places`");
+                _db.execSQL("DROP TABLE IF EXISTS `tasks`");
                 if (mCallbacks != null) {
                     for (int _i = 0, _size = mCallbacks.size(); _i < _size; _i++) {
                         mCallbacks.get(_i).onDestructiveMigration(_db);
@@ -84,11 +85,13 @@ public final class AppDatabase_Impl extends AppDatabase {
             @Override
             protected RoomOpenHelper.ValidationResult onValidateSchema(SupportSQLiteDatabase _db) {
                 final HashMap<String, TableInfo.Column> _columnsPlaces = new HashMap<String, TableInfo.Column>(2);
-                _columnsPlaces.put("uid", new TableInfo.Column("uid", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
-                _columnsPlaces.put("name", new TableInfo.Column("name", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+                _columnsTasks.put("id", new TableInfo.Column("id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+                _columnsTasks.put("shortName", new TableInfo.Column("shortName", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+                _columnsTasks.put("description", new TableInfo.Column("description", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+                _columnsTasks.put("creationDate", new TableInfo.Column("creationDate", "DATE", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
                 final HashSet<TableInfo.ForeignKey> _foreignKeysPlaces = new HashSet<TableInfo.ForeignKey>(0);
                 final HashSet<TableInfo.Index> _indicesPlaces = new HashSet<TableInfo.Index>(0);
-                final TableInfo _infoPlaces = new TableInfo("tasks", _columnsPlaces, _foreignKeysPlaces, _indicesPlaces);
+                final TableInfo _infoPlaces = new TableInfo("tasks", _columnsTasks, _foreignKeysTasks, _indicesTasks);
                 final TableInfo _existingPlaces = TableInfo.read(_db, "tasks");
                 if (! _infoPlaces.equals(_existingPlaces)) {
                     return new RoomOpenHelper.ValidationResult(false, "places(de.hsbremen.mc.myplaces.model.Place).\n"
@@ -110,7 +113,7 @@ public final class AppDatabase_Impl extends AppDatabase {
     protected InvalidationTracker createInvalidationTracker() {
         final HashMap<String, String> _shadowTablesMap = new HashMap<String, String>(0);
         HashMap<String, Set<String>> _viewTables = new HashMap<String, Set<String>>(0);
-        return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "places");
+        return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "tasks");
     }
 
     @Override
@@ -119,7 +122,7 @@ public final class AppDatabase_Impl extends AppDatabase {
         final SupportSQLiteDatabase _db = super.getOpenHelper().getWritableDatabase();
         try {
             super.beginTransaction();
-            _db.execSQL("DELETE FROM `places`");
+            _db.execSQL("DELETE FROM `tasks`");
             super.setTransactionSuccessful();
         } finally {
             super.endTransaction();
@@ -163,4 +166,3 @@ public final class AppDatabase_Impl extends AppDatabase {
         }
     }
 }
-*/
