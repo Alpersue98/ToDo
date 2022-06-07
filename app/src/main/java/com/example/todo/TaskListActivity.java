@@ -1,10 +1,13 @@
 package com.example.todo;
 
+import android.content.Intent;
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Bundle;
+import com.example.todo.databinding.ActivityTaskListBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +60,7 @@ public class  TaskListActivity extends AppCompatActivity implements TaskListAdap
 
     @Override
     public void onTaskSelected(Task task) {
+        //Für impliziten Intent: Siehe Contactpicker,
         Intent intent = new Intent(this, TaskDetailActivity.class);
         Bundle extras = new Bundle();
         extras.putString(TaskDetailActivity.EXTRA_TASK_NAME, task.getShortName());

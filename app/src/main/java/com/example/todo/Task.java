@@ -10,7 +10,6 @@ import java.util.GregorianCalendar;
  * Created by thorsten on 21.03.20.
  * Task class containing Id, task Name, description, creation date, and completion status
  */
-
 @Entity
 public class Task {
 
@@ -20,7 +19,7 @@ public class Task {
     private int mId;
     private String mShortName;
     private String mDescription;
-    private Date mCreationDate;
+    private Date mCreationDate; // zum Speichern in Room: Converter annotation
     private boolean mDone;
 
     public Task(String shortName) {
@@ -34,8 +33,7 @@ public class Task {
         return this.mId;
     }
 
-    public void setId(int id){
-        this.mId = id;
+    public void setId(int id) {this.mId = id;
     }
 
     public String getShortName() {

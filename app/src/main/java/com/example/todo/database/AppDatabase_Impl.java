@@ -28,7 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-/*
+
 @SuppressWarnings({"unchecked", "deprecation"})
 public final class AppDatabase_Impl extends AppDatabase {
     private volatile TasksDao _tasksDao;
@@ -168,4 +168,3 @@ public final class AppDatabase_Impl extends AppDatabase {
         }
     }
 }
-*/

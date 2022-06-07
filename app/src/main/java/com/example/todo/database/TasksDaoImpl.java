@@ -16,7 +16,7 @@ import java.lang.SuppressWarnings;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-/*
+
 @SuppressWarnings({"unchecked", "deprecation"})
 final class TasksDao_Impl implements TasksDao {
     private final RoomDatabase __db;
@@ -97,8 +97,10 @@ final class TasksDao_Impl implements TasksDao {
         __db.assertNotSuspendingTransaction();
         final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
         try {
-            final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
-            final int _cursorIndexOfName = CursorUtil.getColumnIndexOrThrow(_cursor, "name");
+            final int _cursorIndexOfUid = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+            final int _cursorIndexOfName = CursorUtil.getColumnIndexOrThrow(_cursor, "shortName");
+            final int _cursorIndexOfDescription = CursorUtil.getColumnIndexOrThrow(_cursor, "description");
+            final int _cursorIndexOfDate = CursorUtil.getColumnIndexOrThrow(_cursor, "creationDate");
             final List<Task> _result = new ArrayList<Task>(_cursor.getCount());
             while(_cursor.moveToNext()) {
                 final Task _item;
@@ -110,8 +112,8 @@ final class TasksDao_Impl implements TasksDao {
                 }
                 _item = new Task(_tmpName);
                 final long _tmpUid;
-                _tmpUid = _cursor.getLong(_cursorIndexOfId);
-                _item.setId( (int) _tmpUid);
+                _tmpUid = _cursor.getLong(_cursorIndexOfUid);
+                _item.setId((int) _tmpUid);
                 _result.add(_item);
             }
             return _result;
