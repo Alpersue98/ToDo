@@ -7,14 +7,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import android.content.Intent;
 
 
 import com.example.todo.databinding.ActivityTaskListBinding;
-import com.google.android.material.snackbar.Snackbar;
 
 
 public class  TaskListActivity extends AppCompatActivity implements TaskListAdapter.TaskSelectionListener {
@@ -23,7 +21,10 @@ public class  TaskListActivity extends AppCompatActivity implements TaskListAdap
     private TaskListAdapter adapter;
 
     private ArrayList<Task> tasks;
+
     TaskRepositoryInMemoryImpl repository = new TaskRepositoryInMemoryImpl();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +58,10 @@ public class  TaskListActivity extends AppCompatActivity implements TaskListAdap
     @Override
     public void onTaskSelected(Task task) {
         Intent intent = new Intent(this, TaskDetailActivity.class);
-        intent.putExtra(TaskDetailActivity.EXTRA_TASK_NAME, task.getShortName());
+        Bundle extras = new Bundle();
+        extras.putString(TaskDetailActivity.EXTRA_TASK_NAME, task.getShortName());
+        extras.putSerializable("taskRepo", repository);
+        intent.putExtras(extras);
         startActivity(intent);
 
     }

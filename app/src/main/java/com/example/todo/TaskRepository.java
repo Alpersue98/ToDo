@@ -1,5 +1,6 @@
 package com.example.todo;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -10,10 +11,13 @@ import java.util.List;
 
 public interface TaskRepository {
 
+
     List<Task> loadTasks();
 
     void deleteFinishedTasks();
 
-    // TODO: add methods for adding new or updating existing tasks
+    void addTask(Task task);
+
+    void updateTask(Task task, int position);
 
 }

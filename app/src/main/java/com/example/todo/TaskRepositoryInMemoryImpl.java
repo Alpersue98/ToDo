@@ -1,5 +1,9 @@
 package com.example.todo;
-
+/*
+import com.example.todo.database.AppDatabase;
+import com.example.todo.database.TasksDao;
+*/
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,12 +12,15 @@ import java.util.List;
  *
  */
 
-public class TaskRepositoryInMemoryImpl implements TaskRepository {
+public class TaskRepositoryInMemoryImpl implements TaskRepository, Serializable {
 
     private static TaskRepositoryInMemoryImpl instance;
 
-    private List<Task> mTasks;
-
+    public static List<Task> mTasks;
+/*
+    public AppDatabase db;
+    public TasksDao dao;
+*/
 
     public static synchronized TaskRepositoryInMemoryImpl getInstance() {
         if (instance == null) {
@@ -23,7 +30,7 @@ public class TaskRepositoryInMemoryImpl implements TaskRepository {
     }
 
 
-    public TaskRepositoryInMemoryImpl() {
+    public TaskRepositoryInMemoryImpl () {
         mTasks = new ArrayList<>();
 
         //Fill list with task
@@ -42,12 +49,12 @@ public class TaskRepositoryInMemoryImpl implements TaskRepository {
 //            mTasks.add(new Task("Task" + i));
     }
 
-    @Override
+    //@Override
     public List<Task> loadTasks() {
         return mTasks;
     }
 
-    @Override
+    //@Override
     //Find and delete finished tasks from list
     public void deleteFinishedTasks() {
         for (int i=0; i<mTasks.size(); i++) {
@@ -57,5 +64,15 @@ public class TaskRepositoryInMemoryImpl implements TaskRepository {
                 i--;
             }
         }
+    }
+
+    //@Override
+    public void addTask(Task task) {
+        mTasks.add(task);
+    }
+
+    //@Override
+    public void updateTask(Task task, int position) {
+        mTasks.set(position, task);
     }
 }

@@ -18,35 +18,35 @@ import java.util.Collections;
 import java.util.List;
 /*
 @SuppressWarnings({"unchecked", "deprecation"})
-public final class TasksDao_Impl implements TasksDao {
+final class TasksDao_Impl implements TasksDao {
     private final RoomDatabase __db;
 
-    private final EntityInsertionAdapter<Task> __insertionAdapterOfPlace;
+    private final EntityInsertionAdapter<Task> __insertionAdapterOfTask;
 
-    private final SharedSQLiteStatement __preparedStmtOfDeleteAllPlaces;
+    private final SharedSQLiteStatement __preparedStmtOfDeleteAllTasks;
 
     public TasksDao_Impl(RoomDatabase __db) {
         this.__db = __db;
-        this.__insertionAdapterOfPlace = new EntityInsertionAdapter<Task>(__db) {
+        this.__insertionAdapterOfTask = new EntityInsertionAdapter<Task>(__db) {
             @Override
             public String createQuery() {
-                return "INSERT OR ABORT INTO `tasks` (`uid`,`name`) VALUES (nullif(?, 0),?)";
+                return "INSERT OR ABORT INTO `tasks` (`id`,`name`) VALUES (nullif(?, 0),?)";
             }
 
             @Override
             public void bind(SupportSQLiteStatement stmt, Task value) {
-                stmt.bindLong(1, value.getUid());
-                if (value.getName() == null) {
+                stmt.bindLong(1, value.getId());
+                if (value.getShortName() == null) {
                     stmt.bindNull(2);
                 } else {
-                    stmt.bindString(2, value.getName());
+                    stmt.bindString(2, value.getShortName());
                 }
             }
         };
-        this.__preparedStmtOfDeleteAllPlaces = new SharedSQLiteStatement(__db) {
+        this.__preparedStmtOfDeleteAllTasks = new SharedSQLiteStatement(__db) {
             @Override
             public String createQuery() {
-                final String _query = "delete from places";
+                final String _query = "delete from tasks";
                 return _query;
             }
         };
@@ -57,7 +57,7 @@ public final class TasksDao_Impl implements TasksDao {
         __db.assertNotSuspendingTransaction();
         __db.beginTransaction();
         try {
-            __insertionAdapterOfPlace.insert(task);
+            __insertionAdapterOfTask.insert(task);
             __db.setTransactionSuccessful();
         } finally {
             __db.endTransaction();
@@ -69,7 +69,7 @@ public final class TasksDao_Impl implements TasksDao {
         __db.assertNotSuspendingTransaction();
         __db.beginTransaction();
         try {
-            __insertionAdapterOfPlace.insert(tasks);
+            __insertionAdapterOfTask.insert(tasks);
             __db.setTransactionSuccessful();
         } finally {
             __db.endTransaction();
@@ -79,25 +79,25 @@ public final class TasksDao_Impl implements TasksDao {
     @Override
     public void deleteAllTasks() {
         __db.assertNotSuspendingTransaction();
-        final SupportSQLiteStatement _stmt = __preparedStmtOfDeleteAllPlaces.acquire();
+        final SupportSQLiteStatement _stmt = __preparedStmtOfDeleteAllTasks.acquire();
         __db.beginTransaction();
         try {
             _stmt.executeUpdateDelete();
             __db.setTransactionSuccessful();
         } finally {
             __db.endTransaction();
-            __preparedStmtOfDeleteAllPlaces.release(_stmt);
+            __preparedStmtOfDeleteAllTasks.release(_stmt);
         }
     }
 
     @Override
     public List<Task> getAllTasks() {
-        final String _sql = "select * from places";
+        final String _sql = "select * from tasks";
         final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
         __db.assertNotSuspendingTransaction();
         final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
         try {
-            final int _cursorIndexOfUid = CursorUtil.getColumnIndexOrThrow(_cursor, "uid");
+            final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
             final int _cursorIndexOfName = CursorUtil.getColumnIndexOrThrow(_cursor, "name");
             final List<Task> _result = new ArrayList<Task>(_cursor.getCount());
             while(_cursor.moveToNext()) {
@@ -110,8 +110,8 @@ public final class TasksDao_Impl implements TasksDao {
                 }
                 _item = new Task(_tmpName);
                 final long _tmpUid;
-                _tmpUid = _cursor.getLong(_cursorIndexOfUid);
-                _item.setUid(_tmpUid);
+                _tmpUid = _cursor.getLong(_cursorIndexOfId);
+                _item.setId( (int) _tmpUid);
                 _result.add(_item);
             }
             return _result;
@@ -125,4 +125,5 @@ public final class TasksDao_Impl implements TasksDao {
         return Collections.emptyList();
     }
 }
-*/
+
+ */

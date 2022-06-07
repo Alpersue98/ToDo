@@ -23,9 +23,10 @@ public class TaskDetailActivity extends AppCompatActivity {
     EditText editDesc;
     CheckBox doneBox;
 
+    TaskRepositoryInMemoryImpl taskRepo;
+
     //Create list of tasks
-    TaskRepositoryInMemoryImpl taskRepo = new TaskRepositoryInMemoryImpl();
-    List<Task> taskList = taskRepo.loadTasks();
+    List<Task> taskList;
 
 
     Task currentTask;
@@ -38,7 +39,10 @@ public class TaskDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Intent intent = getIntent();
-        String extraTaskName = intent.getStringExtra("EXTRA_TASK_NAME");
+        Bundle extras = intent.getExtras();
+        String extraTaskName = extras.getString("EXTRA_TASK_NAME");
+        taskRepo = (TaskRepositoryInMemoryImpl) extras.getSerializable("taskRepo");
+        taskList = taskRepo.loadTasks();
 
         TextView lastTaskView = (TextView) findViewById(R.id.LastTask);
         lastTaskView.append("ExtraName: " + extraTaskName + "\n");
@@ -107,10 +111,10 @@ public class TaskDetailActivity extends AppCompatActivity {
         currentTask.setDone(doneBox.isChecked());
 
         if(addTaskMode == true){
-            taskList.add(currentTaskPos, currentTask);
+            taskRepo.addTask(currentTask);
         }
         else {
-            taskList.set(currentTaskPos, currentTask);
+            taskRepo.updateTask(currentTask, currentTaskPos);
         }
 
 
