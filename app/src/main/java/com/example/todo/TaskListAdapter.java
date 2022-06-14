@@ -28,6 +28,8 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
     // Listener interface for callbacks from adapter to owner activity
     public interface TaskSelectionListener {
         void onTaskSelected(Task task);
+
+        void addNewTask();
     }
 
     private TaskSelectionListener listener;

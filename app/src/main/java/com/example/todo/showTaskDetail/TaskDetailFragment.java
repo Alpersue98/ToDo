@@ -13,13 +13,13 @@ import androidx.fragment.app.Fragment;
 import com.example.todo.R;
 import com.example.todo.Task;
 import com.example.todo.TaskRepositoryInMemoryImpl;
-import com.example.todo.databinding.FragmentActivityMainBinding;
+import com.example.todo.databinding.FragmentTaskDetailBinding;
 
 import java.text.DateFormat;
 
 public class TaskDetailFragment extends Fragment {
 
-    private final static String LOG_TAG =TaskDetailFragment.class.getSimpleName();
+    private final static String LOG_TAG = TaskDetailFragment.class.getSimpleName();
 
     TextView textView;
     EditText editName;
@@ -31,7 +31,7 @@ public class TaskDetailFragment extends Fragment {
 
     TaskRepositoryInMemoryImpl taskRepo = new TaskRepositoryInMemoryImpl();
 
-    private FragmentActivityMainBinding binding;
+    private FragmentTaskDetailBinding binding;
 
     public TaskDetailFragment(){
 
@@ -46,7 +46,7 @@ public class TaskDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        binding = FragmentActivityMainBinding.inflate(inflater, container, false);
+        binding = FragmentTaskDetailBinding.inflate(inflater, container, false);
 
         return binding.getRoot();
 

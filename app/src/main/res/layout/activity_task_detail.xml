@@ -4,15 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TaskListActivity">
+    android:background="#00FF2222"
+    tools:context=".TaskDetailActivity">
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/taskListFragment"
-        android:name="com.example.todo.showTaskList.TaskListFragment"
+        android:id="@+id/taskDetailContainer"
+        android:name="com.example.todo.showTaskDetail.TaskDetailFragment"
         android:layout_width="411dp"
-        android:layout_height="734dp"
+        android:layout_height="732dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,7 @@
 package com.example.todo.showTaskList;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.todo.Task;
+import com.example.todo.TaskDetailActivity;
 import com.example.todo.TaskListAdapter;
 import com.example.todo.databinding.FragmentTaskListBinding;
 
@@ -21,6 +23,8 @@ public class TaskListFragment extends Fragment implements TaskListAdapter.TaskSe
 
 
     public interface TaskListFragmentCallbacks {
+
+        void addNewTask();
         void onTaskSelected(Task task);
 
     }
@@ -32,23 +36,22 @@ public class TaskListFragment extends Fragment implements TaskListAdapter.TaskSe
 
     // TODO: Rename parameter arguments, choose names that match
    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    //private static final String ARG_PARAM1 = "param1";
+    //private static final String ARG_PARAM2 = "param2";
 //
 //    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    //private String mParam1;
+   // private String mParam2;
 
     public TaskListFragment(){
-
     }
 
-    public static TaskListFragment newInstance(String param1, String param2){
+    public static TaskListFragment newInstance(/*String param1, String param2*/){
         TaskListFragment fragment = new TaskListFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+        //Bundle args = new Bundle();
+        //args.putString(ARG_PARAM1, param1);
+        //args.putString(ARG_PARAM2, param2);
+       // fragment.setArguments(args);
         return fragment;
     }
 
@@ -66,8 +69,8 @@ public class TaskListFragment extends Fragment implements TaskListAdapter.TaskSe
         return binding.getRoot();
     }
 
-    public void setTasks(ArrayList<Task> tasks) {
-        adapter.setTasks( tasks);
+    public void setTasks(List<Task> tasks) {
+        adapter.setTasks((ArrayList<Task>) tasks);
     }
 
     @Override
@@ -77,7 +80,7 @@ public class TaskListFragment extends Fragment implements TaskListAdapter.TaskSe
             listener = (TaskListFragmentCallbacks) context;
         } catch (ClassCastException cce) {
             throw new ClassCastException(context.toString()
-                    + " must implement PlaceListFragmentCallbacks");
+                    + " must implement TaskListFragmentCallbacks");
         }
     }
 
@@ -91,5 +94,11 @@ public class TaskListFragment extends Fragment implements TaskListAdapter.TaskSe
     @Override
     public void onTaskSelected(Task task) {
         listener.onTaskSelected(task);
+    }
+
+    public void addNewTask() {
+        Intent intent = new Intent(getActivity(), TaskDetailActivity.class);
+        intent.putExtra("EXTRA_TASK_NAME", (Bundle) null);
+        startActivity(intent);
     }
 }

@@ -11,6 +11,7 @@ import com.example.todo.Task;
 import com.example.todo.databinding.TaskListItemBinding;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskViewHolder> {
@@ -20,14 +21,15 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         void onTaskSelected(Task task);
     }
 
+
     private TaskSelectionListener listener;
-    private ArrayList<Task> tasks;
+    private List<Task> tasks;
 
     public TaskListAdapter(TaskSelectionListener listener) {
         this.listener = listener;
     }
 
-    public void setTasks(ArrayList<Task> tasks) {
+    public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
         notifyDataSetChanged();
     }

@@ -5,12 +5,14 @@
       <map>
         <entry key="..\:/Users/Alper/AndroidStudioProjects/ToDo/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Users/jlwie/AndroidStudioProjects/ToDo/app/src/main/res/layout-land/activity_task_list.xml" value="0.25749559082892415" />
-        <entry key="..\:/Users/jlwie/AndroidStudioProjects/ToDo/app/src/main/res/layout-sw600dp/activity_task_list.xml" value="0.15163934426229508" />
+        <entry key="..\:/Users/jlwie/AndroidStudioProjects/ToDo/app/src/main/res/layout-sw600dp/activity_task_list.xml" value="0.2222222222222222" />
         <entry key="..\:/Users/jlwie/AndroidStudioProjects/ToDo/app/src/main/res/layout-sw600dp/fragment_task_list.xml" value="0.1734375" />
         <entry key="..\:/Users/jlwie/AndroidStudioProjects/ToDo/app/src/main/res/layout-w800dp/activity_task_list.xml" value="0.228125" />
         <entry key="..\:/Users/jlwie/AndroidStudioProjects/ToDo/app/src/main/res/layout/activity_main.xml" value="0.2222222222222222" />
+        <entry key="..\:/Users/jlwie/AndroidStudioProjects/ToDo/app/src/main/res/layout/activity_task_detail.xml" value="0.14635416666666667" />
         <entry key="..\:/Users/jlwie/AndroidStudioProjects/ToDo/app/src/main/res/layout/activity_task_list.xml" value="0.33" />
         <entry key="..\:/Users/jlwie/AndroidStudioProjects/ToDo/app/src/main/res/layout/fragment_activity_main.xml" value="0.20885416666666667" />
+        <entry key="..\:/Users/jlwie/AndroidStudioProjects/ToDo/app/src/main/res/layout/fragment_task_detail.xml" value="0.14635416666666667" />
         <entry key="..\:/Users/jlwie/AndroidStudioProjects/ToDo/app/src/main/res/layout/fragment_task_list.xml" value="0.20885416666666667" />
         <entry key="..\:/Users/jlwie/AndroidStudioProjects/ToDo/app/src/main/res/layout/recyclerview_row.xml" value="0.18697916666666667" />
         <entry key="..\:/Users/jlwie/AndroidStudioProjects/ToDo/app/src/main/res/layout/task_list_item.xml" value="0.4" />

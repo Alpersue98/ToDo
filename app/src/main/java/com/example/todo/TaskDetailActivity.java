@@ -1,6 +1,8 @@
 package com.example.todo;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -10,23 +12,25 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.todo.databinding.ActivityTaskDetailBinding;
+import com.example.todo.databinding.ActivityTaskDetailBinding;
+import com.example.todo.showTaskDetail.TaskDetailFragment;
+
 import java.text.DateFormat;
 import java.util.List;
 import java.util.Objects;
 
 public class TaskDetailActivity extends AppCompatActivity {
 
-    public static final Integer EXTRA_TASK_ID = -1;
+    public static final int EXTRA_TASK_ID = -1;
 
-    TextView textView;
-    EditText editName;
-    EditText editDesc;
-    CheckBox doneBox;
 
     TaskRepositoryInMemoryImpl taskRepo;
 
     //Create list of tasks
     List<Task> taskList;
+
+    private TaskDetailFragment tdf;
 
 
     Task currentTask;
@@ -36,19 +40,38 @@ public class TaskDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+        ActivityTaskDetailBinding binding = ActivityTaskDetailBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        FragmentManager fm = getSupportFragmentManager();
+        if (savedInstanceState == null) {
+            FragmentTransaction t = fm.beginTransaction();
+            tdf = TaskDetailFragment.newInstance();
+            t.add(R.id.taskDetailContainer, tdf);
+            t.commit();
+        } else {
+            tdf = (TaskDetailFragment) fm.findFragmentById(R.id.taskDetailContainer);
+        }
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
-        int extraTaskID = extras.getInt("EXTRA_TASK_ID");
+        String extraTaskName = extras.getString("EXTRA_TASK_NAME");
         taskRepo = (TaskRepositoryInMemoryImpl) extras.getSerializable("taskRepo");
         taskList = taskRepo.loadTasks();
 
         TextView lastTaskView = (TextView) findViewById(R.id.LastTask);
-        lastTaskView.append("ExtraID: " + extraTaskID + "\n");
+        lastTaskView.append("ExtraID: " + extraTaskName + "\n");
 
 
-        if (extraTaskID == -1){
+        if (extraTaskName == null){
             currentTask = new Task("");
             currentTaskPos = taskList.size();
             addTaskMode = true;
@@ -57,7 +80,7 @@ public class TaskDetailActivity extends AppCompatActivity {
             for (int i = 0; i < taskList.size(); i++){
                 Task tempTask = taskList.get(i);
                 lastTaskView.append("tempTask: " + tempTask.getShortName() + "\n");
-                if (Objects.equals(extraTaskID, tempTask.getId())){
+                if (Objects.equals(extraTaskName, tempTask.getShortName())){
                     lastTaskView.append("tempTaskID: " + tempTask.getId() + "\n");
                     currentTask = tempTask;
                     currentTaskPos = i;
@@ -66,63 +89,8 @@ public class TaskDetailActivity extends AppCompatActivity {
             }
         }
 
-
-        //TODO: Adjust font size so text always fits in views
-
-        //Task Name
-        textView = (TextView) findViewById(R.id.nameView);
-        textView.setText("Task");
-        editName = (EditText) findViewById(R.id.editName);
-        //Get and display task name
-        editName.setText(currentTask.getShortName());
-
-        //Description
-        textView = (TextView) findViewById(R.id.descView);
-        textView.setText("Description");
-        editDesc = (EditText) findViewById(R.id.editDescription);
-        //Get and display task description
-        editDesc.setText(currentTask.getDescription());
-
-        //CreationDate
-        textView = (TextView) findViewById(R.id.dateView);
-        textView.setText("Creation Date");
-        textView = (TextView) findViewById(R.id.text_Date);
-        //Get and display creation date
-        textView.setText(DateFormat.getDateInstance().format(currentTask.getCreationDate()));
-
-        //Done
-        textView = (TextView) findViewById(R.id.doneView);
-        textView.setText("Done");
-        doneBox = (CheckBox) findViewById(R.id.checkBox);
-        //Set box as checked is task is saved as done
-        doneBox.setChecked(currentTask.isDone());
-
+        tdf.showTask(currentTask);
 
     }
 
-    //Save changes to current task
-    //Called by onClick of saveButton
-    public void saveTask(View view) {
-
-        //create new Task with attributes from layout
-        currentTask.setShortName(editName.getText().toString());
-        currentTask.setDescription(editDesc.getText().toString());
-        currentTask.setDone(doneBox.isChecked());
-
-        if(addTaskMode == true){
-            taskRepo.addTask(currentTask);
-        }
-        else {
-            taskRepo.updateTask(currentTask, currentTaskPos);
-        }
-
-
-        //Show attributes of last task in list (for testing)
-        TextView lastTaskView = (TextView) findViewById(R.id.LastTask);
-        lastTaskView.setText("Current Task: \n");
-        Task lastTask = (Task) taskList.get(currentTaskPos);
-        lastTaskView.append("Name: " + lastTask.getShortName() + "\n");
-        lastTaskView.append("Desc: " + lastTask.getDescription() + "\n");
-        lastTaskView.append("Done: " + lastTask.isDone() + "\n");
-    }
 }

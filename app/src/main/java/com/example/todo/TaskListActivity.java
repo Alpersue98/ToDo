@@ -2,9 +2,10 @@ package com.example.todo;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.Placeholder;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,11 +15,10 @@ import com.example.todo.databinding.ActivityTaskListBinding;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-import android.content.Intent;
 
-
-import com.example.todo.databinding.ActivityTaskListBinding;
 import com.example.todo.showTaskDetail.TaskDetailFragment;
 import com.example.todo.showTaskList.TaskListFragment;
 
@@ -26,15 +26,15 @@ import com.example.todo.showTaskList.TaskListFragment;
 public class  TaskListActivity extends AppCompatActivity
         implements TaskListAdapter.TaskSelectionListener, TaskListFragment.TaskListFragmentCallbacks {
 
-
+    private ActivityTaskListBinding binding;
     private TaskListFragment tlf;
     private TaskDetailFragment tdf;
     private boolean tabletMode = false;
 
-    private ActivityTaskListBinding binding;
+
     private TaskListAdapter adapter;
 
-    private ArrayList<Task> tasks;
+    private List<Task> tasks;
 
     TaskRepositoryInMemoryImpl repository = new TaskRepositoryInMemoryImpl();
 
@@ -47,24 +47,11 @@ public class  TaskListActivity extends AppCompatActivity
         binding = ActivityTaskListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Define reaction to button
-        findViewById(R.id.addTaskButton).setOnClickListener(v -> addNewTask());
-        tasks = (ArrayList<Task>) repository.loadTasks();
-
-
-
-        // RecyclerView
-        RecyclerView recyclerView = binding.taskRecycler;
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new TaskListAdapter(this);
-        adapter.setTasks(tasks);
-        recyclerView.setAdapter(adapter);
-/*
         FragmentManager fm = getSupportFragmentManager();
         tlf = (TaskListFragment) fm.findFragmentById(R.id.taskListFragment);
 
         // Running on a tablet: only if taskDetailContainer view is included in layout
-        if (binding.TaskDetailContainer != null) {
+        if (binding.taskDetailContainer != null) {
             tabletMode = true;
 
             // Add instance of TaskDetailFragment to layout, if not already present.
@@ -76,23 +63,46 @@ public class  TaskListActivity extends AppCompatActivity
                 t.commit();
             }
         }
-*/
+
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        repository = TaskRepositoryInMemoryImpl.getInstance();
+
+        // Asynchronous execution of db statement
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executor.execute(() -> {
+            // Background thread work here:
+//            repository.createTestData();
+            tasks = repository.loadTasks();
+
+            handler.post(() -> {
+                // UI thread work here
+                tlf.setTasks(tasks);
+            });
+        });
+
+    }
+
+
+    @Override
     public void addNewTask() {
-        //Snackbar.make(findViewById(android.R.id.content).getRootView(), "New Task has been added! ", Snackbar.LENGTH_SHORT).show();
         Intent intent = new Intent(this, TaskDetailActivity.class);
-        intent.putExtra("EXTRA_TASK_ID", -1);
+        intent.putExtra("EXTRA_TASK_NAME", (Bundle) null);
         startActivity(intent);
     }
-
 
     @Override
     public void onTaskSelected(Task task) {
         //Für impliziten Intent: Siehe Contactpicker
         Intent intent = new Intent(this, TaskDetailActivity.class);
         Bundle extras = new Bundle();
-        extras.putInt("EXTRA_TASK_ID", task.getId());
+        extras.putString("EXTRA_TASK_NAME", task.getShortName());
         extras.putSerializable("taskRepo", repository);
         intent.putExtras(extras);
         startActivity(intent);
