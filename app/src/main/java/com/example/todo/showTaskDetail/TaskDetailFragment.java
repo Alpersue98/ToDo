@@ -17,7 +17,7 @@ import com.example.todo.databinding.FragmentTaskDetailBinding;
 
 import java.text.DateFormat;
 
-public class TaskDetailFragment extends Fragment {
+public class TaskDetailFragment extends Fragment  implements View.OnClickListener{
 
     private final static String LOG_TAG = TaskDetailFragment.class.getSimpleName();
 
@@ -27,6 +27,7 @@ public class TaskDetailFragment extends Fragment {
     CheckBox doneBox;
 
     Task currentTask;
+    int currentTaskPos;
     boolean addTaskMode = false;
 
     TaskRepositoryInMemoryImpl taskRepo = new TaskRepositoryInMemoryImpl();
@@ -52,34 +53,35 @@ public class TaskDetailFragment extends Fragment {
 
     }
 
-    public void showTask(Task task){
+    public void showTask(Task task, int taskPos){
 
         currentTask = task;
+        currentTaskPos = taskPos;
 
         //Task Name
-        textView = (TextView) getView().findViewById(R.id.nameView);
-        textView.setText("Task");
+        //textView = (TextView) getView().findViewById(R.id.nameView);
+        //textView.setText("Task");
         editName = (EditText) getView().findViewById(R.id.editName);
         //Get and display task name
         editName.setText(currentTask.getShortName());
 
         //Description
-        textView = (TextView) getView().findViewById(R.id.descView);
-        textView.setText("Description");
+        //textView = (TextView) getView().findViewById(R.id.descView);
+        //textView.setText("Description");
         editDesc = (EditText) getView().findViewById(R.id.editDescription);
         //Get and display task description
         editDesc.setText(currentTask.getDescription());
 
         //CreationDate
-        textView = (TextView) getView().findViewById(R.id.dateView);
-        textView.setText("Creation Date");
+        //textView = (TextView) getView().findViewById(R.id.dateView);
+        //textView.setText("Creation Date");
         textView = (TextView) getView().findViewById(R.id.text_Date);
         //Get and display creation date
         textView.setText(DateFormat.getDateInstance().format(currentTask.getCreationDate()));
 
         //Done
-        textView = (TextView) getView().findViewById(R.id.doneView);
-        textView.setText("Done");
+        //textView = (TextView) getView().findViewById(R.id.doneView);
+        //textView.setText("Done");
         doneBox = (CheckBox) getView().findViewById(R.id.checkBox);
         //Set box as checked is task is saved as done
         doneBox.setChecked( currentTask.isDone());
@@ -96,7 +98,7 @@ public class TaskDetailFragment extends Fragment {
             taskRepo.addTask(currentTask);
         }
         else {
-            //taskRepo.updateTask(currentTask, currentTaskPos);
+            taskRepo.updateTask(currentTask, currentTaskPos);
         }
 
 
@@ -107,5 +109,10 @@ public class TaskDetailFragment extends Fragment {
         lastTaskView.append("Name: " + lastTask.getShortName() + "\n");
         lastTaskView.append("Desc: " + lastTask.getDescription() + "\n");
         lastTaskView.append("Done: " + lastTask.isDone() + "\n");*/
+    }
+
+    @Override
+    public void onClick(View view) {
+
     }
 }

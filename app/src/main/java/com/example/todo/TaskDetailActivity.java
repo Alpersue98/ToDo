@@ -22,7 +22,7 @@ import java.util.Objects;
 
 public class TaskDetailActivity extends AppCompatActivity {
 
-    public static final int EXTRA_TASK_ID = -1;
+    public static final String EXTRA_TASK_NAME = "EXTRA_TASK_NAME";
 
 
     TaskRepositoryInMemoryImpl taskRepo;
@@ -64,11 +64,10 @@ public class TaskDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         String extraTaskName = extras.getString("EXTRA_TASK_NAME");
-        taskRepo = (TaskRepositoryInMemoryImpl) extras.getSerializable("taskRepo");
-        taskList = taskRepo.loadTasks();
+
 
         TextView lastTaskView = (TextView) findViewById(R.id.LastTask);
-        lastTaskView.append("ExtraID: " + extraTaskName + "\n");
+        lastTaskView.append("ExtraName: " + extraTaskName + "\n");
 
 
         if (extraTaskName == null){
@@ -77,6 +76,9 @@ public class TaskDetailActivity extends AppCompatActivity {
             addTaskMode = true;
         }
         else {
+            taskRepo = (TaskRepositoryInMemoryImpl) extras.getSerializable("taskRepo");
+            taskList = taskRepo.loadTasks();
+
             for (int i = 0; i < taskList.size(); i++){
                 Task tempTask = taskList.get(i);
                 lastTaskView.append("tempTask: " + tempTask.getShortName() + "\n");
@@ -89,8 +91,7 @@ public class TaskDetailActivity extends AppCompatActivity {
             }
         }
 
-        tdf.showTask(currentTask);
-
+        tdf.showTask(currentTask, currentTaskPos);
     }
 
 }

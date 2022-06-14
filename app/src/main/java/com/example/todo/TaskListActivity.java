@@ -93,7 +93,7 @@ public class  TaskListActivity extends AppCompatActivity
     @Override
     public void addNewTask() {
         Intent intent = new Intent(this, TaskDetailActivity.class);
-        intent.putExtra("EXTRA_TASK_NAME", (Bundle) null);
+        intent.putExtra("EXTRA_TASK_NAME", (String) null);
         startActivity(intent);
     }
 
