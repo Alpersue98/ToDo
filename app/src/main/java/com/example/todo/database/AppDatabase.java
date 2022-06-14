@@ -17,5 +17,5 @@ public abstract class AppDatabase extends RoomDatabase {
     // thus reducing testability.
 
     public abstract TasksDao tasksDao();
-}
-*/
+}*/
+

@@ -16,7 +16,7 @@ import java.util.Objects;
 
 public class TaskDetailActivity extends AppCompatActivity {
 
-    public static final String EXTRA_TASK_NAME = "EXTRA_TASK_NAME";
+    public static final Integer EXTRA_TASK_ID = -1;
 
     TextView textView;
     EditText editName;
@@ -40,15 +40,15 @@ public class TaskDetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
-        String extraTaskName = extras.getString("EXTRA_TASK_NAME");
+        int extraTaskID = extras.getInt("EXTRA_TASK_ID");
         taskRepo = (TaskRepositoryInMemoryImpl) extras.getSerializable("taskRepo");
         taskList = taskRepo.loadTasks();
 
         TextView lastTaskView = (TextView) findViewById(R.id.LastTask);
-        lastTaskView.append("ExtraName: " + extraTaskName + "\n");
+        lastTaskView.append("ExtraID: " + extraTaskID + "\n");
 
 
-        if (Objects.equals(extraTaskName, null)){
+        if (extraTaskID == -1){
             currentTask = new Task("");
             currentTaskPos = taskList.size();
             addTaskMode = true;
@@ -57,9 +57,8 @@ public class TaskDetailActivity extends AppCompatActivity {
             for (int i = 0; i < taskList.size(); i++){
                 Task tempTask = taskList.get(i);
                 lastTaskView.append("tempTask: " + tempTask.getShortName() + "\n");
-                //TODO: Problems with same task name, should use ID instead
-                if (Objects.equals(extraTaskName, tempTask.getShortName())){
-                    lastTaskView.append("tempTaskID: " + tempTask.getShortName() + "\n");
+                if (Objects.equals(extraTaskID, tempTask.getId())){
+                    lastTaskView.append("tempTaskID: " + tempTask.getId() + "\n");
                     currentTask = tempTask;
                     currentTaskPos = i;
 

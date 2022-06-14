@@ -28,7 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+/*
 @SuppressWarnings({"unchecked", "deprecation"})
 public final class AppDatabase_Impl extends AppDatabase {
     private volatile TasksDao _tasksDao;
@@ -87,18 +87,18 @@ public final class AppDatabase_Impl extends AppDatabase {
                 final HashMap<String, TableInfo.Column> _columnsTasks = new HashMap<String, TableInfo.Column>(2);
                 _columnsTasks.put("id", new TableInfo.Column("uid", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
                 _columnsTasks.put("name", new TableInfo.Column("name", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
-                _columnsTasks.put("description", new TableInfo.Column("description", "Text", false, 1, null, TableInfo.CREATED_FROM_ENTITY));
-                _columnsTasks.put("data", new TableInfo.Column("date", "DATE", false, 1, null, TableInfo.CREATED_FROM_ENTITY));
-                _columnsTasks.put("done", new TableInfo.Column("done", "BOOL", false, 1, null, TableInfo.CREATED_FROM_ENTITY));
+                _columnsTasks.put("description", new TableInfo.Column("description", "TEXT", false, 1, null, TableInfo.CREATED_FROM_ENTITY));
+                _columnsTasks.put("date", new TableInfo.Column("date", "INT", false, 1, null, TableInfo.CREATED_FROM_ENTITY));
+                _columnsTasks.put("done", new TableInfo.Column("done", "INT", false, 1, null, TableInfo.CREATED_FROM_ENTITY));
                 final HashSet<TableInfo.ForeignKey> _foreignKeysTasks = new HashSet<TableInfo.ForeignKey>(0);
                 final HashSet<TableInfo.Index> _indicesTasks = new HashSet<TableInfo.Index>(0);
-                final TableInfo _infoPlaces = new TableInfo("tasks", _columnsTasks, _foreignKeysTasks, _indicesTasks);
-                final TableInfo _existingPlaces = TableInfo.read(_db, "tasks");
-                if (! _infoPlaces.equals(_existingPlaces)) {
+                final TableInfo _infoTasks = new TableInfo("tasks", _columnsTasks, _foreignKeysTasks, _indicesTasks);
+                final TableInfo _existingTasks = TableInfo.read(_db, "tasks");
+                if (! _infoTasks.equals(_existingTasks)) {
                     //return new RoomOpenHelper.ValidationResult(false, "places(de.hsbremen.mc.myplaces.model.Place).\n"
-                    return new RoomOpenHelper.ValidationResult(false, "tasks(com.example.todo.model.Place).\n"
-                            + " Expected:\n" + _infoPlaces + "\n"
-                            + " Found:\n" + _existingPlaces);
+                    return new RoomOpenHelper.ValidationResult(false, "tasks(com.example.todo.model.Task).\n"
+                            + " Expected:\n" + _infoTasks + "\n"
+                            + " Found:\n" + _existingTasks);
                 }
                 return new RoomOpenHelper.ValidationResult(true, null);
             }
@@ -168,3 +168,4 @@ public final class AppDatabase_Impl extends AppDatabase {
         }
     }
 }
+*/

@@ -3,6 +3,7 @@ package com.example.todo;
 import com.example.todo.database.AppDatabase;
 import com.example.todo.database.TasksDao;
 */
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +18,10 @@ public class TaskRepositoryInMemoryImpl implements TaskRepository, Serializable 
     private static TaskRepositoryInMemoryImpl instance;
 
     public static List<Task> mTasks;
-/*
-    public AppDatabase db;
-    public TasksDao dao;
-*/
+
+    //public AppDatabase db;
+    //public TasksDao dao;
+
 
     public static synchronized TaskRepositoryInMemoryImpl getInstance() {
         if (instance == null) {

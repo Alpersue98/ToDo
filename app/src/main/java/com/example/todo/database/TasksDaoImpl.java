@@ -16,7 +16,7 @@ import java.lang.SuppressWarnings;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
+/*
 @SuppressWarnings({"unchecked", "deprecation"})
 final class TasksDao_Impl implements TasksDao {
     private final RoomDatabase __db;
@@ -127,5 +127,5 @@ final class TasksDao_Impl implements TasksDao {
         return Collections.emptyList();
     }
 }
+*/
 
- */
