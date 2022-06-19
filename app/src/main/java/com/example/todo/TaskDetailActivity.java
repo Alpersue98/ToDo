@@ -59,21 +59,22 @@ public class TaskDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
+        addTaskMode = false;
         super.onStart();
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         String extraTaskName = extras.getString("EXTRA_TASK_NAME");
 
+        //TextView lastTaskView = (TextView) findViewById(R.id.LastTask);
+        //lastTaskView.append("ExtraName: " + extraTaskName + "\n");
 
-        TextView lastTaskView = (TextView) findViewById(R.id.LastTask);
-        lastTaskView.append("ExtraName: " + extraTaskName + "\n");
 
-
-        if (extraTaskName == null){
+        if (extraTaskName == ""){
             currentTask = new Task("");
             currentTaskPos = taskList.size();
             addTaskMode = true;
+
         }
         else {
             taskRepo = (TaskRepositoryInMemoryImpl) extras.getSerializable("taskRepo");
@@ -81,17 +82,19 @@ public class TaskDetailActivity extends AppCompatActivity {
 
             for (int i = 0; i < taskList.size(); i++){
                 Task tempTask = taskList.get(i);
-                lastTaskView.append("tempTask: " + tempTask.getShortName() + "\n");
+                //lastTaskView.append("tempTask: " + tempTask.getShortName() + "\n");
                 if (Objects.equals(extraTaskName, tempTask.getShortName())){
-                    lastTaskView.append("tempTaskID: " + tempTask.getId() + "\n");
+                    //lastTaskView.append("tempTaskID: " + tempTask.getId() + "\n");
                     currentTask = tempTask;
                     currentTaskPos = i;
 
                 }
             }
         }
+        if (addTaskMode == true){
+            tdf.showTask(currentTask, currentTaskPos);
+        }
 
-        tdf.showTask(currentTask, currentTaskPos);
     }
 
 }

@@ -9,7 +9,7 @@ import com.example.todo.Task;
 
 import java.util.List;
 
-/*
+
 @Dao
 public interface TasksDao {
 
@@ -24,4 +24,4 @@ public interface TasksDao {
 
     @Insert
     void insertTasks(List<Task> tasks);
-}*/
+}

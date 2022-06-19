@@ -10,7 +10,7 @@ import java.util.GregorianCalendar;
  * Created by thorsten on 21.03.20.
  * Task class containing Id, task Name, description, creation date, and completion status
  */
-@Entity
+@Entity(tableName = "tasks")
 public class Task {
 
     // simple ID generator

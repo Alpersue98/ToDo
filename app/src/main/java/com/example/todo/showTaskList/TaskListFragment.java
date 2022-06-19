@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.todo.Task;
 import com.example.todo.TaskDetailActivity;
+import com.example.todo.TaskListActivity;
 import com.example.todo.TaskListAdapter;
 import com.example.todo.databinding.FragmentTaskListBinding;
 
@@ -65,7 +66,9 @@ public class TaskListFragment extends Fragment implements TaskListAdapter.TaskSe
         listView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new TaskListAdapter(this);
         listView.setAdapter(adapter);
-
+        binding.addTaskButton.setOnClickListener(v -> {
+            addNewTask();
+        });
         return binding.getRoot();
     }
 
@@ -97,8 +100,8 @@ public class TaskListFragment extends Fragment implements TaskListAdapter.TaskSe
     }
 
     public void addNewTask() {
-        Intent intent = new Intent(getActivity(), TaskDetailActivity.class);
-        intent.putExtra("EXTRA_TASK_NAME", (Bundle) null);
-        startActivity(intent);
+
+        ((TaskListActivity)getActivity()).addNewTask();
+
     }
 }
