@@ -7,10 +7,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.todo.Task;
+import com.example.todo.model.Task;
 import com.example.todo.databinding.TaskListItemBinding;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

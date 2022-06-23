@@ -8,17 +8,16 @@ import android.os.Looper;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.todo.databinding.ActivityTaskListBinding;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
+import com.example.todo.model.Task;
+import com.example.todo.model.TaskRepositoryInMemoryImpl;
 import com.example.todo.showTaskDetail.TaskDetailFragment;
 import com.example.todo.showTaskList.TaskListFragment;
 
@@ -33,10 +32,8 @@ public class  TaskListActivity extends AppCompatActivity
 
 
     private TaskListAdapter adapter;
-
     private List<Task> tasks;
-
-    TaskRepositoryInMemoryImpl repository = new TaskRepositoryInMemoryImpl();
+    private TaskRepositoryInMemoryImpl repository;
 
 
 
@@ -63,14 +60,11 @@ public class  TaskListActivity extends AppCompatActivity
                 t.commit();
             }
         }
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
-        repository = TaskRepositoryInMemoryImpl.getInstance();
 
         // Asynchronous execution of db statement
         ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -79,6 +73,8 @@ public class  TaskListActivity extends AppCompatActivity
         executor.execute(() -> {
             // Background thread work here:
 //            repository.createTestData();
+
+            repository = TaskRepositoryInMemoryImpl.getInstance();
             tasks = repository.loadTasks();
 
             handler.post(() -> {
@@ -95,18 +91,26 @@ public class  TaskListActivity extends AppCompatActivity
         Intent intent = new Intent(this, TaskDetailActivity.class);
         Bundle extras = new Bundle();
         extras.putString("EXTRA_TASK_NAME", "");
-        extras.putSerializable("taskRepo", repository);
+        //extras.putSerializable("taskRepo", repository);
+        extras.putBoolean("ADDTASKMODE", true);
         intent.putExtras(extras);
         startActivity(intent);
     }
 
     @Override
     public void onTaskSelected(Task task) {
+        //TODO: andere Ausführung bei tabletmode
+        //if (tabletMode) {
+        //            tdf.showTask(task);
+        //}
+        //else{
+
         //Für impliziten Intent: Siehe Contactpicker
         Intent intent = new Intent(this, TaskDetailActivity.class);
         Bundle extras = new Bundle();
         extras.putString("EXTRA_TASK_NAME", task.getShortName());
-        extras.putSerializable("taskRepo", repository);
+        //extras.putSerializable("taskRepo", repository);
+        extras.putBoolean("ADDTASKMODE", false);
         intent.putExtras(extras);
         startActivity(intent);
 

@@ -4,37 +4,35 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.example.todo.databinding.ActivityTaskDetailBinding;
-import com.example.todo.databinding.ActivityTaskDetailBinding;
+import com.example.todo.model.Task;
+import com.example.todo.model.TaskRepositoryInMemoryImpl;
 import com.example.todo.showTaskDetail.TaskDetailFragment;
 
-import java.text.DateFormat;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class TaskDetailActivity extends AppCompatActivity {
 
     public static final String EXTRA_TASK_NAME = "EXTRA_TASK_NAME";
 
 
-    TaskRepositoryInMemoryImpl taskRepo;
+    TaskRepositoryInMemoryImpl taskRepo = TaskRepositoryInMemoryImpl.getInstance();
 
     //Create list of tasks
-    List<Task> taskList;
+    //List<Task> taskList;
 
     private TaskDetailFragment tdf;
 
 
     Task currentTask;
-    int currentTaskPos;
     boolean addTaskMode = false;
 
     @Override
@@ -59,40 +57,52 @@ public class TaskDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        addTaskMode = false;
         super.onStart();
+        addTaskMode = false;
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         String extraTaskName = extras.getString("EXTRA_TASK_NAME");
+        boolean addTaskModeExtra = extras.getBoolean("ADD_TASK_MODE");
+        addTaskMode = addTaskModeExtra;
 
         //TextView lastTaskView = (TextView) findViewById(R.id.LastTask);
         //lastTaskView.append("ExtraName: " + extraTaskName + "\n");
 
 
-        if (extraTaskName == ""){
+        if (addTaskMode == true){
             currentTask = new Task("");
-            currentTaskPos = taskList.size();
-            addTaskMode = true;
-
         }
         else {
-            taskRepo = (TaskRepositoryInMemoryImpl) extras.getSerializable("taskRepo");
-            taskList = taskRepo.loadTasks();
 
-            for (int i = 0; i < taskList.size(); i++){
-                Task tempTask = taskList.get(i);
-                //lastTaskView.append("tempTask: " + tempTask.getShortName() + "\n");
-                if (Objects.equals(extraTaskName, tempTask.getShortName())){
-                    //lastTaskView.append("tempTaskID: " + tempTask.getId() + "\n");
-                    currentTask = tempTask;
-                    currentTaskPos = i;
+            // Asynchronous execution of db statement
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            Handler handler = new Handler(Looper.getMainLooper());
 
-                }
-            }
+            executor.execute(() -> {
+                // Background thread work here:
+//            repository.createTestData();
+
+                List<Task> taskList = taskRepo.loadTasks();
+
+                handler.post(() -> {
+                    for (int i = 0; i < taskList.size(); i++){
+                        Task tempTask = taskList.get(i);
+                        //lastTaskView.append("tempTask: " + tempTask.getShortName() + "\n");
+                        if (Objects.equals(extraTaskName, tempTask.getShortName())){
+                            //lastTaskView.append("tempTaskID: " + tempTask.getId() + "\n");
+                            currentTask = tempTask;
+
+                        }
+                    }
+                });
+            });
+
         }
+        //TODO: showTask sollte bei addTaskMode == false ausgeführt werden
+        //if (addTaskMode == false){
         if (addTaskMode == true){
-            tdf.showTask(currentTask, currentTaskPos);
+            tdf.showTask(currentTask);
         }
 
     }

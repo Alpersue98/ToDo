@@ -1,8 +1,13 @@
-package com.example.todo;
+package com.example.todo.model;
+
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -10,22 +15,28 @@ import java.util.GregorianCalendar;
  * Created by thorsten on 21.03.20.
  * Task class containing Id, task Name, description, creation date, and completion status
  */
+
 @Entity(tableName = "tasks")
-public class Task {
+public class Task implements Parcelable{
 
-    // simple ID generator
-    private static int MAX_ID = 0;
 
+
+    @PrimaryKey(autoGenerate = true)
     private int mId;
     private String mShortName;
     private String mDescription;
-    private Date mCreationDate; // zum Speichern in Room: Converter annotation
+    private String mCreationDate; // zum Speichern in Room: Converter annotation
     private boolean mDone;
 
     public Task(String shortName) {
-        this.mId = MAX_ID++;
         this.mShortName = shortName;
-        this.mCreationDate = GregorianCalendar.getInstance().getTime();
+
+
+        String pattern = "dd/MM/yyyy";
+        DateFormat df = new SimpleDateFormat(pattern);
+
+        Date creationDate = GregorianCalendar.getInstance().getTime();
+        this.mCreationDate = df.format(creationDate);
     }
 
     //Getters and setters for task attributes
@@ -52,8 +63,12 @@ public class Task {
         this.mDescription = description;
     }
 
-    public Date getCreationDate() {
+    public String getCreationDate() {
         return mCreationDate;
+    }
+
+    public void setCreationDate(String date) {
+        this.mCreationDate = date;
     }
 
     public boolean isDone() {
@@ -76,4 +91,32 @@ public class Task {
         }
         return false;
     }
+
+    protected Task(Parcel in) {
+        mShortName = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mShortName);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    //Parcelable interface methods
+    public static final Parcelable.Creator<Task> CREATOR = new Parcelable.Creator<Task>() {
+        @Override
+        public Task createFromParcel(Parcel in) {
+            return new Task(in);
+        }
+
+        @Override
+        public Task[] newArray(int size) {
+            return new Task[size];
+        }
+    };
 }
+

@@ -1,8 +1,12 @@
-package com.example.todo;
+package com.example.todo.model;
 /*
 import com.example.todo.database.AppDatabase;
 import com.example.todo.database.TasksDao;
 */
+
+import com.example.todo.ToDoApp;
+import com.example.todo.database.AppDatabase;
+import com.example.todo.database.TasksDao;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,10 +21,9 @@ public class TaskRepositoryInMemoryImpl implements TaskRepository, Serializable 
 
     private static TaskRepositoryInMemoryImpl instance;
 
-    public static List<Task> mTasks;
 
-    //public AppDatabase db;
-    //public TasksDao dao;
+    public AppDatabase db;
+    public TasksDao dao;
 
 
     public static synchronized TaskRepositoryInMemoryImpl getInstance() {
@@ -31,8 +34,14 @@ public class TaskRepositoryInMemoryImpl implements TaskRepository, Serializable 
     }
 
 
+
+
     public TaskRepositoryInMemoryImpl () {
-        mTasks = new ArrayList<>();
+
+        db = ToDoApp.appDatabase;
+        dao = db.tasksDao();
+
+        List<Task> mTasks = new ArrayList<>();
 
         //Fill list with task
         Task myTask = new Task("Empty the trash");
@@ -46,34 +55,35 @@ public class TaskRepositoryInMemoryImpl implements TaskRepository, Serializable 
         myTask.setDone(true);
         mTasks.add(myTask);
 
-//        for (int i=0; i<40; i++)
-//            mTasks.add(new Task("Task" + i));
+        dao.deleteAllTasks();
+        dao.insertTasks(mTasks);
     }
 
-    //@Override
+
+    @Override
     public List<Task> loadTasks() {
-        return mTasks;
+        return dao.getAllTasks();
     }
 
-    //@Override
+    @Override
     //Find and delete finished tasks from list
     public void deleteFinishedTasks() {
-        for (int i=0; i<mTasks.size(); i++) {
+        /*for (int i=0; i<mTasks.size(); i++) {
             Task task = mTasks.get(i);
             if (task.isDone()) {
                 mTasks.remove(task);
                 i--;
             }
-        }
+        }*/
     }
 
-    //@Override
+    @Override
     public void addTask(Task task) {
-        mTasks.add(task);
+        dao.addTask(task);
     }
 
-    //@Override
-    public void updateTask(Task task, int position) {
-        mTasks.set(position, task);
+    @Override
+    public void updateTask(Task task) {
+        dao.updateTask(task);
     }
 }

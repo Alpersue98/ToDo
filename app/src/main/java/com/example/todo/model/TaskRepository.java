@@ -1,6 +1,7 @@
-package com.example.todo;
+package com.example.todo.model;
 
-import java.io.Serializable;
+import com.example.todo.model.Task;
+
 import java.util.List;
 
 /**
@@ -10,8 +11,6 @@ import java.util.List;
 
 
 public interface TaskRepository {
-    //soll auf TaskRepoitoryInMemoryImpl zugreifen, von beiden Aktivitäten verwendet werden
-    //Intentfilter in Android.xml
 
 
     List<Task> loadTasks();
@@ -20,6 +19,6 @@ public interface TaskRepository {
 
     void addTask(Task task);
 
-    void updateTask(Task task, int position);
+    void updateTask(Task task);
 
 }
