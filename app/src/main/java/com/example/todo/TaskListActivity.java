@@ -88,18 +88,23 @@ public class  TaskListActivity extends AppCompatActivity
 
     @Override
     public void addNewTask() {
-        Intent intent = new Intent(this, TaskDetailActivity.class);
-        Bundle extras = new Bundle();
-        extras.putString("EXTRA_TASK_NAME", "");
-        //extras.putSerializable("taskRepo", repository);
-        extras.putBoolean("ADDTASKMODE", true);
-        intent.putExtras(extras);
-        startActivity(intent);
+        if (!tabletMode) {
+            Intent intent = new Intent(this, TaskDetailActivity.class);
+            Bundle extras = new Bundle();
+            extras.putString("EXTRA_TASK_NAME", "");
+            //extras.putSerializable("taskRepo", repository);
+            extras.putBoolean("ADD_TASK_MODE", true);
+            intent.putExtras(extras);
+            startActivity(intent);
+        }
+        else{
+            tdf.addTaskMode = true;
+            tdf.clearTask();
+        }
     }
 
     @Override
     public void onTaskSelected(Task task) {
-        //TODO: andere Ausführung bei tabletmode
         if (tabletMode) {
                     tdf.showTask(task);
         }

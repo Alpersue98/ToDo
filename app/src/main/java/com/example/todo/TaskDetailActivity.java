@@ -24,8 +24,6 @@ public class TaskDetailActivity extends AppCompatActivity {
     public static final String EXTRA_TASK_NAME = "EXTRA_TASK_NAME";
 
 
-    TaskRepositoryInMemoryImpl taskRepo = TaskRepositoryInMemoryImpl.getInstance();
-
     //Create list of tasks
     //List<Task> taskList;
 
@@ -33,7 +31,6 @@ public class TaskDetailActivity extends AppCompatActivity {
 
 
     Task currentTask;
-    boolean addTaskMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,27 +48,24 @@ public class TaskDetailActivity extends AppCompatActivity {
         } else {
             tdf = (TaskDetailFragment) fm.findFragmentById(R.id.taskDetailContainer);
         }
-
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        addTaskMode = false;
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         String extraTaskName = extras.getString("EXTRA_TASK_NAME");
         boolean addTaskModeExtra = extras.getBoolean("ADD_TASK_MODE");
-        addTaskMode = addTaskModeExtra;
 
         //TextView lastTaskView = (TextView) findViewById(R.id.LastTask);
         //lastTaskView.append("ExtraName: " + extraTaskName + "\n");
 
 
-        if (addTaskMode == true){
+        if (addTaskModeExtra){
             currentTask = new Task("");
+            tdf.addTaskMode = true;
         }
         else {
 
@@ -80,9 +74,8 @@ public class TaskDetailActivity extends AppCompatActivity {
             Handler handler = new Handler(Looper.getMainLooper());
 
             executor.execute(() -> {
-                // Background thread work here:
-//            repository.createTestData();
 
+                TaskRepositoryInMemoryImpl taskRepo = TaskRepositoryInMemoryImpl.getInstance();
                 List<Task> taskList = taskRepo.loadTasks();
 
                 handler.post(() -> {
@@ -91,19 +84,13 @@ public class TaskDetailActivity extends AppCompatActivity {
                         //lastTaskView.append("tempTask: " + tempTask.getShortName() + "\n");
                         if (Objects.equals(extraTaskName, tempTask.getShortName())){
                             //lastTaskView.append("tempTaskID: " + tempTask.getId() + "\n");
-                            currentTask = tempTask;
-
+                            tdf.showTask(tempTask);
                         }
                     }
                 });
             });
-            //tdf.showTask(currentTask);
 
-        }
-        //TODO: showTask sollte bei addTaskMode == false ausgeführt werden
-        //if (addTaskMode == false){
-        if (addTaskMode == true){
-            tdf.showTask(currentTask);
+
         }
 
     }

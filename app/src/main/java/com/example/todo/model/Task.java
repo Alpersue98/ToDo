@@ -19,20 +19,23 @@ import java.util.GregorianCalendar;
 @Entity(tableName = "tasks")
 public class Task implements Parcelable{
 
-
-
     @PrimaryKey(autoGenerate = true)
     private int mId;
+    //private Long mId = null;
+
     private String mShortName;
+
     private String mDescription;
+
     private String mCreationDate; // zum Speichern in Room: Converter annotation
+
     private boolean mDone;
 
     public Task(String shortName) {
         this.mShortName = shortName;
 
 
-        String pattern = "dd/MM/yyyy";
+        String pattern = "dd.MM.yyyy";
         DateFormat df = new SimpleDateFormat(pattern);
 
         Date creationDate = GregorianCalendar.getInstance().getTime();

@@ -25,7 +25,6 @@ public class TaskListFragment extends Fragment implements TaskListAdapter.TaskSe
 
         void addNewTask();
         void onTaskSelected(Task task);
-
     }
 
     private FragmentTaskListBinding binding;
