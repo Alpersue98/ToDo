@@ -97,6 +97,7 @@ public class TaskDetailActivity extends AppCompatActivity {
                     }
                 });
             });
+            //tdf.showTask(currentTask);
 
         }
         //TODO: showTask sollte bei addTaskMode == false ausgeführt werden

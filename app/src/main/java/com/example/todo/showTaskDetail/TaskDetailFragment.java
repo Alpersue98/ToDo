@@ -28,7 +28,7 @@ public class TaskDetailFragment extends Fragment{
     //int currentTaskPos;
     boolean addTaskMode = false;
 
-    TaskRepositoryInMemoryImpl taskRepo = TaskRepositoryInMemoryImpl.getInstance();
+    //TaskRepositoryInMemoryImpl taskRepo = TaskRepositoryInMemoryImpl.getInstance();
 
     private FragmentTaskDetailBinding binding;
 
@@ -82,16 +82,17 @@ public class TaskDetailFragment extends Fragment{
 
     public void saveTask() {
 
+        //TODO: Stürzt bei saveTask ab
         //create new Task with attributes from layout
         currentTask.setShortName(editName.getText().toString());
         currentTask.setDescription(editDesc.getText().toString());
         currentTask.setDone(doneBox.isChecked());
 
         if(addTaskMode == true){
-            taskRepo.addTask(currentTask);
+            //taskRepo.addTask(currentTask);
         }
         else {
-            taskRepo.updateTask(currentTask);
+            //taskRepo.updateTask(currentTask);
         }
 
 

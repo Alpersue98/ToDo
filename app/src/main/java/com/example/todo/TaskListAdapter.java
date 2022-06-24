@@ -55,7 +55,14 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
 
     @Override
     public int getItemCount() {
-        return tasks.size();
+        try{
+            return tasks.size();
+        }
+        catch (NullPointerException nullE){
+            return 0;
+        }
+
+
     }
 
 
