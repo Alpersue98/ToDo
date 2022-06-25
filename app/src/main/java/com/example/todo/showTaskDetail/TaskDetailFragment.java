@@ -1,5 +1,6 @@
 package com.example.todo.showTaskDetail;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -14,6 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.todo.R;
 import com.example.todo.TaskDetailActivity;
+import com.example.todo.TaskListActivity;
 import com.example.todo.model.Task;
 import com.example.todo.model.TaskRepositoryInMemoryImpl;
 import com.example.todo.databinding.FragmentTaskDetailBinding;
@@ -34,6 +36,7 @@ public class TaskDetailFragment extends Fragment{
 
     Task currentTask;
     public boolean addTaskMode = false;
+    public boolean tabletMode = false;
 
     private FragmentTaskDetailBinding binding;
 
@@ -89,7 +92,7 @@ public class TaskDetailFragment extends Fragment{
 
         // Asynchronous execution of db statement
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        Handler handler = new Handler(Looper.getMainLooper());
+
 
         executor.execute(() -> {
             // Background thread work here:
@@ -104,7 +107,7 @@ public class TaskDetailFragment extends Fragment{
                 //check if editName field was left empty
                 if(!Objects.equals(editName.getText().toString(), "")){
 
-
+                    //if a new task is being added
                     if (addTaskMode) {
                         Task tempTask = new Task(editName.getText().toString());
 
@@ -112,48 +115,74 @@ public class TaskDetailFragment extends Fragment{
                         tempTask.setDone(doneBox.isChecked());
 
                         taskRepo.addTask(tempTask);
-                        //TODO: Should load tasklist activity here (unless in tablet mode)
-                        //TODO: Should update task list in tablet mode here
-                    } else {
+                        if (tabletMode){
+                            ((TaskListActivity)getActivity()).loadTaskList();
+                            clearTask();
+                        }
+                        else{
+                            //Go back to taskList Activity (outside of tablet mode)
+                            Intent intent = new Intent(((TaskDetailActivity)getActivity()), TaskListActivity.class);
+                            startActivity(intent);
+                        }
+                    }
+
+                    //If task is being updated
+                    else {
                         currentTask.setShortName(editName.getText().toString());
+                        currentTask.setDescription(editDesc.getText().toString());
                         currentTask.setDone(doneBox.isChecked());
 
                         taskRepo.updateTask(currentTask);
-                        //TODO: Should update task list in tablet mode here
+                        if (tabletMode){
+                            //TODO: Sometimes gets added as new task here (instead of updating)
+                            ((TaskListActivity)getActivity()).loadTaskList();
+                            clearTask();
+                        }
+                        else{
+                            //Go back to taskList Activity (outside of tablet mode)
+                            Intent intent = new Intent(((TaskDetailActivity)getActivity()), TaskListActivity.class);
+                            startActivity(intent);
+                        }
                     }
                 }
 
             }
             catch (NullPointerException nE){
-                TextView lastTaskView = (TextView) getView().findViewById(R.id.LastTask);
-                lastTaskView.append("NullPointer Exception!" +  nE.getMessage());
+                //TextView lastTaskView = (TextView) getView().findViewById(R.id.LastTask);
+                //lastTaskView.append("NullPointer Exception!" +  nE.getMessage());
                 return;
             }
 
-            handler.post(() -> {
 
-            });
         });
 
     }
 
-    //Clear task info (if addTask button is pressed in tablet mode or save button is pressed)
+
+
+    //Clear task editTexts (if addTask button is pressed in tablet mode or save button is pressed)
     public void clearTask() {
-        //Task Name
-        editName = (EditText) getView().findViewById(R.id.editName);
-        //Get and display task name
-        editName.setText("");
-        //Description
-        editDesc = (EditText) getView().findViewById(R.id.editDescription);
-        //Get and display task description
-        editDesc.setText("");
-        //CreationDate
-        textView = (TextView) getView().findViewById(R.id.text_Date);
-        //Get and display creation date
-        textView.setText("");
-        //Done
-        doneBox = (CheckBox) getView().findViewById(R.id.checkBox);
-        //Set box as checked is task is saved as done
-        doneBox.setChecked(false);
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        handler.post(() -> {
+            //Task Name
+            editName = (EditText) getView().findViewById(R.id.editName);
+            //Get and display task name
+            editName.setText("");
+            //Description
+            editDesc = (EditText) getView().findViewById(R.id.editDescription);
+            //Get and display task description
+            editDesc.setText("");
+            //CreationDate
+            textView = (TextView) getView().findViewById(R.id.text_Date);
+            //Get and display creation date
+            textView.setText("");
+            //Done
+            doneBox = (CheckBox) getView().findViewById(R.id.checkBox);
+            //Set box as checked is task is saved as done
+            doneBox.setChecked(false);
+        });
+
+
     }
 }

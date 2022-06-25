@@ -65,7 +65,50 @@ public class  TaskListActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
+        loadTaskList();
 
+
+    }
+
+
+    @Override
+    public void addNewTask() {
+        if (tabletMode) {
+            tdf.clearTask();
+            tdf.addTaskMode = true;
+            tdf.tabletMode = true;
+        }
+        else{
+            Intent intent = new Intent(this, TaskDetailActivity.class);
+            Bundle extras = new Bundle();
+            extras.putString("EXTRA_TASK_NAME", "");
+            //extras.putSerializable("taskRepo", repository);
+            extras.putBoolean("ADD_TASK_MODE", true);
+            intent.putExtras(extras);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onTaskSelected(Task task) {
+        if (tabletMode) {
+            tdf.showTask(task);
+            tdf.addTaskMode = false;
+            tdf.tabletMode = true;
+        } else {
+            //Für impliziten Intent: Siehe Contactpicker
+            Intent intent = new Intent(this, TaskDetailActivity.class);
+            Bundle extras = new Bundle();
+            extras.putString("EXTRA_TASK_NAME", task.getShortName());
+            //extras.putSerializable("taskRepo", repository);
+            extras.putBoolean("ADDTASKMODE", false);
+            intent.putExtras(extras);
+            startActivity(intent);
+        }
+    }
+
+
+    public void loadTaskList() {
         // Asynchronous execution of db statement
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
@@ -82,44 +125,6 @@ public class  TaskListActivity extends AppCompatActivity
                 tlf.setTasks(tasks);
             });
         });
-
-    }
-
-
-    @Override
-    public void addNewTask() {
-        if (!tabletMode) {
-            Intent intent = new Intent(this, TaskDetailActivity.class);
-            Bundle extras = new Bundle();
-            extras.putString("EXTRA_TASK_NAME", "");
-            //extras.putSerializable("taskRepo", repository);
-            extras.putBoolean("ADD_TASK_MODE", true);
-            intent.putExtras(extras);
-            startActivity(intent);
-        }
-        else{
-            tdf.addTaskMode = true;
-            tdf.clearTask();
-        }
-    }
-
-    @Override
-    public void onTaskSelected(Task task) {
-        if (tabletMode) {
-                    tdf.showTask(task);
-        }
-        else{
-            //Für impliziten Intent: Siehe Contactpicker
-            Intent intent = new Intent(this, TaskDetailActivity.class);
-            Bundle extras = new Bundle();
-            extras.putString("EXTRA_TASK_NAME", task.getShortName());
-            //extras.putSerializable("taskRepo", repository);
-            extras.putBoolean("ADDTASKMODE", false);
-            intent.putExtras(extras);
-            startActivity(intent);
-        }
-
-
 
     }
 }
