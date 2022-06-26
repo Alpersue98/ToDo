@@ -134,14 +134,20 @@ public class TaskDetailFragment extends Fragment{
 
                         taskRepo.updateTask(currentTask);
                         if (tabletMode){
-                            //TODO: Sometimes gets added as new task here (instead of updating)
                             ((TaskListActivity)getActivity()).loadTaskList();
                             clearTask();
                         }
                         else{
-                            //Go back to taskList Activity (outside of tablet mode)
-                            Intent intent = new Intent(((TaskDetailActivity)getActivity()), TaskListActivity.class);
-                            startActivity(intent);
+                            try{
+                                //TODO: On tablet the app sometimes crashes here if tabletMode is set incorrectly
+                                //Go back to taskList Activity (outside of tablet mode)
+                                Intent intent = new Intent(((TaskDetailActivity)getActivity()), TaskListActivity.class);
+                                startActivity(intent);
+                            }
+                            catch (ClassCastException CCe){
+                                tabletMode = true;
+                                return;
+                            }
                         }
                     }
                 }

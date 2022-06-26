@@ -2,6 +2,7 @@ package com.example.todo;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,8 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         void onTaskSelected(Task task);
 
         void addNewTask();
+
+        void onCheckBoxClick(boolean isChecked,Task task);
     }
 
     private TaskSelectionListener listener;
@@ -47,9 +50,14 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
         Task task = tasks.get(position);
         holder.taskTextView.setText(task.getShortName());
+        holder.taskCheckBox.setChecked(task.isDone());
 
         holder.itemView.setOnClickListener(v -> {
             listener.onTaskSelected(task);
+        });
+
+        holder.taskCheckBox.setOnClickListener( v -> {
+            listener.onCheckBoxClick(holder.taskCheckBox.isChecked(), task);
         });
     }
 
@@ -69,10 +77,12 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
     public static class TaskViewHolder extends RecyclerView.ViewHolder {
 
         public TextView taskTextView;
+        public CheckBox taskCheckBox;
 
         public TaskViewHolder(@NonNull TaskListItemBinding binding) {
             super(binding.getRoot());
             taskTextView = binding.taskTextView;
+            taskCheckBox = binding.taskCheckBox;
         }
     }
 }

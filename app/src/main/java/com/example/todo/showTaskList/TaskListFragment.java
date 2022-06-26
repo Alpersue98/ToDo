@@ -25,6 +25,8 @@ public class TaskListFragment extends Fragment implements TaskListAdapter.TaskSe
 
         void addNewTask();
         void onTaskSelected(Task task);
+
+        void onCheckBoxClick(boolean isChecked,Task task);
     }
 
     private FragmentTaskListBinding binding;
@@ -100,5 +102,10 @@ public class TaskListFragment extends Fragment implements TaskListAdapter.TaskSe
 
         ((TaskListActivity)getActivity()).addNewTask();
 
+    }
+
+    @Override
+    public void onCheckBoxClick(boolean isChecked, Task task) {
+        listener.onCheckBoxClick(isChecked, task);
     }
 }

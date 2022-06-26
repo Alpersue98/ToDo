@@ -90,6 +90,28 @@ public class  TaskListActivity extends AppCompatActivity
     }
 
     @Override
+    public void onCheckBoxClick(boolean isChecked, Task task) {
+
+        task.setDone(isChecked);
+
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executor.execute(() -> {
+
+            repository = TaskRepositoryInMemoryImpl.getInstance();
+            repository.updateTask(task);
+
+            handler.post(() -> {
+                // UI thread work here
+                if(tabletMode){
+                    tdf.showTask(task);
+                }
+            });
+        });
+    }
+
+    @Override
     public void onTaskSelected(Task task) {
         if (tabletMode) {
             tdf.showTask(task);
@@ -114,8 +136,6 @@ public class  TaskListActivity extends AppCompatActivity
         Handler handler = new Handler(Looper.getMainLooper());
 
         executor.execute(() -> {
-            // Background thread work here:
-//            repository.createTestData();
 
             repository = TaskRepositoryInMemoryImpl.getInstance();
             tasks = repository.loadTasks();
