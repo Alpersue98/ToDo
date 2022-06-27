@@ -15,7 +15,9 @@ public interface TaskRepository {
 
     List<Task> loadTasks();
 
-    void deleteFinishedTasks();
+    List<Task> getFinishedTasks(List<Task> taskList);
+
+    List<Task> deleteFinishedTasks(List<Task> tasks);
 
     void addTask(Task task);
 

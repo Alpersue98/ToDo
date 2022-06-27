@@ -115,14 +115,23 @@ public class TaskDetailFragment extends Fragment{
                         tempTask.setDone(doneBox.isChecked());
 
                         taskRepo.addTask(tempTask);
+
                         if (tabletMode){
-                            ((TaskListActivity)getActivity()).loadTaskList();
                             clearTask();
+                            ((TaskListActivity)getActivity()).showFilteredTasks();
+
                         }
                         else{
                             //Go back to taskList Activity (outside of tablet mode)
-                            Intent intent = new Intent(((TaskDetailActivity)getActivity()), TaskListActivity.class);
-                            startActivity(intent);
+                            try{
+                                //TODO: On tablet the app sometimes crashes here if tabletMode is set incorrectly
+                                Intent intent = new Intent(((TaskDetailActivity)getActivity()), TaskListActivity.class);
+                                startActivity(intent);
+                            }
+                            catch (ClassCastException CCe){
+                                tabletMode = true;
+                                return;
+                            }
                         }
                     }
 
@@ -134,8 +143,10 @@ public class TaskDetailFragment extends Fragment{
 
                         taskRepo.updateTask(currentTask);
                         if (tabletMode){
-                            ((TaskListActivity)getActivity()).loadTaskList();
                             clearTask();
+
+                            ((TaskListActivity)getActivity()).showFilteredTasks();
+
                         }
                         else{
                             try{
@@ -163,7 +174,6 @@ public class TaskDetailFragment extends Fragment{
         });
 
     }
-
 
 
     //Clear task editTexts (if addTask button is pressed in tablet mode or save button is pressed)

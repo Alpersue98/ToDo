@@ -22,6 +22,8 @@ public class TaskRepositoryInMemoryImpl implements TaskRepository, Serializable 
     private static TaskRepositoryInMemoryImpl instance;
 
 
+
+
     public AppDatabase db;
     public TasksDao dao;
 
@@ -65,16 +67,34 @@ public class TaskRepositoryInMemoryImpl implements TaskRepository, Serializable 
         return dao.getAllTasks();
     }
 
+    //Return only finished Tasks (for Filtering)
     @Override
-    //Find and delete finished tasks from list
-    public void deleteFinishedTasks() {
-        /*for (int i=0; i<mTasks.size(); i++) {
+    public List<Task> getFinishedTasks(List<Task> taskList){
+
+        for (int i=0; i < taskList.size(); i++) {
+            Task task = taskList.get(i);
+            if (task.isDone()) {
+                taskList.remove(task);
+                i--;
+            }
+        }
+
+        return taskList;
+    }
+
+    //Find and delete finished tasks from list, returns list of unfinished tasks
+    @Override
+    public List<Task> deleteFinishedTasks(List<Task> mTasks) {
+
+        for (int i=0; i < mTasks.size(); i++) {
             Task task = mTasks.get(i);
             if (task.isDone()) {
+                dao.deleteTask(task);
                 mTasks.remove(task);
                 i--;
             }
-        }*/
+        }
+        return mTasks;
     }
 
     @Override
