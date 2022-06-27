@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">ToDo</string>
+
+    <string-array name="dropdown_array">
+        <item>Show all tasks</item>
+        <item>Show unfinished Tasks</item>
+        <item>Delete finished Tasks</item>
+    </string-array>
 </resources>

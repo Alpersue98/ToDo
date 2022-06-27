@@ -148,9 +148,5 @@ public class  TaskListActivity extends AppCompatActivity
 
     }
 
-    public void showFilteredTasks(){
-        tlf.showFilteredTasks();
-    }
-
 
 }

@@ -7,12 +7,17 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.todo.R;
 import com.example.todo.model.Task;
 import com.example.todo.TaskListActivity;
 import com.example.todo.TaskListAdapter;
@@ -24,7 +29,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class TaskListFragment extends Fragment implements TaskListAdapter.TaskSelectionListener {
+public class TaskListFragment extends Fragment implements TaskListAdapter.TaskSelectionListener, AdapterView.OnItemSelectedListener {
 
 
     public interface TaskListFragmentCallbacks {
@@ -61,6 +66,8 @@ public class TaskListFragment extends Fragment implements TaskListAdapter.TaskSe
         return fragment;
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -75,25 +82,49 @@ public class TaskListFragment extends Fragment implements TaskListAdapter.TaskSe
             addNewTask();
         });
 
-        //TODO: Button only works after second press
-        binding.DeleteFinishedButton.setOnClickListener( v -> {
-            deleteFinishedTasks();
-        });
+        Spinner dropdown = binding.FilterSpinner;
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.dropdown_array, android.R.layout.simple_spinner_item);
 
-        binding.showFinishedSwitch.setChecked(true);
-        binding.showFinishedSwitch.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dropdown.setAdapter(adapter);
+        dropdown.setOnItemSelectedListener(this);
 
-                showFilteredTasks();
-            }
-        });
         return binding.getRoot();
     }
 
-    public void showFilteredTasks() {
+    public void onItemSelected(AdapterView<?> parent, View view,
+                               int pos, long id) {
+        //Set text as empty
+        try{
+            ((TextView)view).setText(null);
+        }
+        //Throws NullPointerException when rotating
+        catch (NullPointerException nE){
+            return;
+        }
 
-        boolean isChecked = binding.showFinishedSwitch.isChecked();
+        switch(pos){
+            case 0:
+                showFilteredTasks(true);
+                break;
+            case 1:
+                showFilteredTasks(false);
+                break;
+            case 2:
+                deleteFinishedTasks();
+                break;
+        }
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    public void showFilteredTasks(boolean showAll) {
+
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
@@ -103,8 +134,10 @@ public class TaskListFragment extends Fragment implements TaskListAdapter.TaskSe
             TaskRepositoryInMemoryImpl repository = TaskRepositoryInMemoryImpl.getInstance();
             List<Task> tasks = repository.loadTasks();
 
+
+
             //If only unfinished task are supposed to be shown
-            if(isChecked) {
+            if(showAll) {
                 handler.post(() -> {
                     setTasks(tasks);
                 });
@@ -113,6 +146,7 @@ public class TaskListFragment extends Fragment implements TaskListAdapter.TaskSe
             //if all tasks are supposed to be shown
             else {
                 List<Task> finishedTasks = repository.getFinishedTasks(tasks);
+                //TODO: Sometimes doesn't update, creates lag in Tabletmode
                 handler.post(() -> {
                     setTasks(finishedTasks);
                 });
@@ -170,6 +204,7 @@ public class TaskListFragment extends Fragment implements TaskListAdapter.TaskSe
     }
 
     @Override
+    //If checkbox of a task in list is checked
     public void onCheckBoxClick(boolean isChecked, Task task) {
         listener.onCheckBoxClick(isChecked, task);
     }

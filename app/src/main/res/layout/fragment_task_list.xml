@@ -21,8 +21,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/taskRecycler"
-        android:layout_width="409dp"
-        android:layout_height="0dp"
+        android:layout_width="410dp"
+        android:layout_height="470dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="64dp"
         android:layout_marginEnd="20dp"
@@ -33,33 +33,17 @@
         tools:itemCount="10"
         tools:listitem="@android:layout/simple_list_item_activated_1" />
 
-    <Switch
-        android:id="@+id/showFinishedSwitch"
-        android:layout_width="186dp"
-        android:layout_height="53dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="76dp"
-        android:layout_marginBottom="9dp"
-        android:minHeight="48dp"
-        android:text="Show Finished Tasks"
-        app:layout_constraintBottom_toTopOf="@+id/taskRecycler"
-        app:layout_constraintEnd_toStartOf="@+id/DeleteFinishedButton"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.55"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
-
-    <Button
-        android:id="@+id/DeleteFinishedButton"
-        android:layout_width="107dp"
-        android:layout_height="68dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="7dp"
-        android:text="Delete Finished"
+    <Spinner
+        android:id="@+id/FilterSpinner"
+        android:layout_width="86dp"
+        android:layout_height="59dp"
+        android:layout_marginEnd="8dp"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown"
         app:layout_constraintBottom_toTopOf="@+id/taskRecycler"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.26" />
+        app:layout_constraintVertical_bias="1.0"
+        tools:ignore="SpeakableTextPresentCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

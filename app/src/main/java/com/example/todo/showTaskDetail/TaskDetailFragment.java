@@ -118,13 +118,12 @@ public class TaskDetailFragment extends Fragment{
 
                         if (tabletMode){
                             clearTask();
-                            ((TaskListActivity)getActivity()).showFilteredTasks();
+                            ((TaskListActivity)getActivity()).loadTaskList();
 
                         }
                         else{
                             //Go back to taskList Activity (outside of tablet mode)
                             try{
-                                //TODO: On tablet the app sometimes crashes here if tabletMode is set incorrectly
                                 Intent intent = new Intent(((TaskDetailActivity)getActivity()), TaskListActivity.class);
                                 startActivity(intent);
                             }
@@ -144,8 +143,7 @@ public class TaskDetailFragment extends Fragment{
                         taskRepo.updateTask(currentTask);
                         if (tabletMode){
                             clearTask();
-
-                            ((TaskListActivity)getActivity()).showFilteredTasks();
+                            ((TaskListActivity)getActivity()).loadTaskList();
 
                         }
                         else{

@@ -28,7 +28,6 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
 
     private TaskSelectionListener listener;
     private ArrayList<Task> tasks;
-    //public boolean showAllTasks = true;
 
     public TaskListAdapter(TaskSelectionListener listener) {
         this.listener = listener;
