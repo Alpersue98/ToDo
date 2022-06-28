@@ -27,7 +27,7 @@ public class Task implements Parcelable{
 
     private String mDescription;
 
-    private String mCreationDate; // zum Speichern in Room: Converter annotation
+    private String mDueDate; // zum Speichern in Room: Converter annotation
 
     private boolean mDone;
 
@@ -39,7 +39,7 @@ public class Task implements Parcelable{
         DateFormat df = new SimpleDateFormat(pattern);
 
         Date creationDate = GregorianCalendar.getInstance().getTime();
-        this.mCreationDate = df.format(creationDate);
+        this.mDueDate = df.format(creationDate);
     }
 
     //Getters and setters for task attributes
@@ -66,12 +66,12 @@ public class Task implements Parcelable{
         this.mDescription = description;
     }
 
-    public String getCreationDate() {
-        return mCreationDate;
+    public String getDueDate() {
+        return mDueDate;
     }
 
-    public void setCreationDate(String date) {
-        this.mCreationDate = date;
+    public void setDueDate(String date) {
+        this.mDueDate = date;
     }
 
     public boolean isDone() {

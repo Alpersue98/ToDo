@@ -59,9 +59,6 @@ public class TaskDetailActivity extends AppCompatActivity {
         String extraTaskName = extras.getString("EXTRA_TASK_NAME");
         boolean addTaskModeExtra = extras.getBoolean("ADD_TASK_MODE");
 
-        //TextView lastTaskView = (TextView) findViewById(R.id.LastTask);
-        //lastTaskView.append("ExtraName: " + extraTaskName + "\n");
-
 
         if (addTaskModeExtra){
             currentTask = new Task("");
