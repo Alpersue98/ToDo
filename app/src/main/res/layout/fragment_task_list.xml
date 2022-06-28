@@ -21,13 +21,11 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/taskRecycler"
-        android:layout_width="410dp"
-        android:layout_height="470dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="20dp"
+        android:layout_width="339dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="32dp"
         android:scrollbars="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:itemCount="10"
@@ -35,9 +33,10 @@
 
     <Spinner
         android:id="@+id/FilterSpinner"
-        android:layout_width="86dp"
-        android:layout_height="59dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="70dp"
+        android:layout_height="29dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="36dp"
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown"
         app:layout_constraintBottom_toTopOf="@+id/taskRecycler"
