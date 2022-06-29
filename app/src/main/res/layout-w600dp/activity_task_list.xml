@@ -36,5 +36,3 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:layout="@layout/fragment_task_detail" />
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-<!--TODO: im Hochformat sollte das Standard-Layout mit einem Fragment verwendet werden-->

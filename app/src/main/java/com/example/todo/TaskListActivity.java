@@ -81,8 +81,7 @@ public class  TaskListActivity extends AppCompatActivity
         else{
             Intent intent = new Intent(this, TaskDetailActivity.class);
             Bundle extras = new Bundle();
-            extras.putString("EXTRA_TASK_NAME", "");
-            //extras.putSerializable("taskRepo", repository);
+            extras.putInt("EXTRA_TASK_ID", -1);
             extras.putBoolean("ADD_TASK_MODE", true);
             intent.putExtras(extras);
             startActivity(intent);
@@ -98,12 +97,10 @@ public class  TaskListActivity extends AppCompatActivity
         Handler handler = new Handler(Looper.getMainLooper());
 
         executor.execute(() -> {
-
             repository = TaskRepositoryInMemoryImpl.getInstance();
             repository.updateTask(task);
 
             handler.post(() -> {
-                // UI thread work here
                 if(tabletMode){
                     tdf.showTask(task);
                 }
@@ -118,11 +115,10 @@ public class  TaskListActivity extends AppCompatActivity
             tdf.addTaskMode = false;
             tdf.tabletMode = true;
         } else {
-            //Für impliziten Intent: Siehe Contactpicker
             Intent intent = new Intent(this, TaskDetailActivity.class);
             Bundle extras = new Bundle();
-            extras.putString("EXTRA_TASK_NAME", task.getShortName());
-            //extras.putSerializable("taskRepo", repository);
+            //Pass task id and addtaskmode to detail activity
+            extras.putInt("EXTRA_TASK_ID", task.getId());
             extras.putBoolean("ADDTASKMODE", false);
             intent.putExtras(extras);
             startActivity(intent);

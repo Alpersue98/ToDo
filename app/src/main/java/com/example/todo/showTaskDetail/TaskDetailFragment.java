@@ -43,14 +43,15 @@ public class TaskDetailFragment extends Fragment{
     CheckBox doneBox;
 
 
+    //Create calendar and date format for date picker
     public Calendar dueCalendar= Calendar.getInstance();
-
-    Task currentTask;
-    public boolean addTaskMode = false;
-    public boolean tabletMode = false;
-
     String format="dd.MM.yy";
     SimpleDateFormat df =new SimpleDateFormat(format);
+
+    Task currentTask;
+
+    public boolean addTaskMode = false;
+    public boolean tabletMode = false;
 
     private FragmentTaskDetailBinding binding;
 
@@ -68,10 +69,14 @@ public class TaskDetailFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         binding = FragmentTaskDetailBinding.inflate(inflater, container, false);
+
+        //Assign listener to save Button
         binding.saveButton.setOnClickListener(v -> {
             saveTask();
 
         });
+
+        //Assign listener for date picker
         DatePickerDialog.OnDateSetListener date = (view, year, month, day) -> {
             dueCalendar.set(Calendar.YEAR, year);
             dueCalendar.set(Calendar.MONTH, month);
@@ -89,17 +94,12 @@ public class TaskDetailFragment extends Fragment{
             dateDialog.getDatePicker().setMinDate(System.currentTimeMillis());
             dateDialog.show();
         });
-
-
-
-
         return binding.getRoot();
 
     }
 
     private void updateLabel(){
 
-        //Todo: text is overlapped with old date on mobile
         //binding.textDate.setText(df.format(dueCalendar.getTime()));
         TextView dateView = (TextView) getView().findViewById(R.id.text_Date);
         dateView.setText(df.format(dueCalendar.getTime()));
@@ -133,12 +133,9 @@ public class TaskDetailFragment extends Fragment{
 
     public void saveTask() {
 
-        // Asynchronous execution of db statement
         ExecutorService executor = Executors.newSingleThreadExecutor();
 
-
         executor.execute(() -> {
-            // Background thread work here:
             TaskRepositoryInMemoryImpl taskRepo = TaskRepositoryInMemoryImpl.getInstance();
 
             try {
@@ -159,6 +156,7 @@ public class TaskDetailFragment extends Fragment{
 
                         taskRepo.addTask(tempTask);
 
+                        //Refresh task list in tablet mode
                         if (tabletMode){
                             clearTask();
                             ((TaskListActivity)getActivity()).loadTaskList();
@@ -171,39 +169,42 @@ public class TaskDetailFragment extends Fragment{
                                 startActivity(intent);
                                 getActivity().finish();
                             }
-                            catch (ClassCastException CCe){
+                            //In case tabletMode is set incorrectly
+                            catch (ClassCastException ccE){
                                 tabletMode = true;
-                                return;
+                                ccE.printStackTrace();
                             }
                         }
                     }
 
                     //If task is being updated
                     else {
+                        //get Task info from layout and update in repo
                         currentTask.setShortName(editName.getText().toString());
                         currentTask.setDescription(editDesc.getText().toString());
                         currentTask.setDone(doneBox.isChecked());
                         currentTask.setDueDate(df.format(dueCalendar.getTime()));
 
-
                         taskRepo.updateTask(currentTask);
+
                         if (tabletMode){
+                            //update task list in tablet mode
                             clearTask();
                             ((TaskListActivity)getActivity()).loadTaskList();
 
                         }
                         else{
                             try{
-                                //TODO: On tablet the app sometimes crashes here if tabletMode is set incorrectly
                                 //Go back to taskList Activity (outside of tablet mode)
-                                Intent intent = new Intent(((TaskDetailActivity)getActivity()), TaskListActivity.class);
+                                Intent intent = new Intent(getActivity(), TaskListActivity.class);
                                 startActivity(intent);
                                 getActivity().finish();
 
                             }
-                            catch (ClassCastException CCe){
+                            //In case tablet mode is set incorrectly
+                            catch (ClassCastException ccE){
                                 tabletMode = true;
-                                return;
+                                ccE.printStackTrace();
                             }
                         }
                     }
@@ -211,14 +212,9 @@ public class TaskDetailFragment extends Fragment{
 
             }
             catch (NullPointerException nE){
-                //TextView lastTaskView = (TextView) getView().findViewById(R.id.LastTask);
-                //lastTaskView.append("NullPointer Exception!" +  nE.getMessage());
-                return;
+               nE.printStackTrace();
             }
-
-
         });
-
     }
 
 
@@ -227,6 +223,7 @@ public class TaskDetailFragment extends Fragment{
         Handler handler = new Handler(Looper.getMainLooper());
 
         handler.post(() -> {
+
             //Task Name
             editName = (EditText) getView().findViewById(R.id.editName);
             //Get and display task name

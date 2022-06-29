@@ -21,13 +21,12 @@ public class Task implements Parcelable{
 
     @PrimaryKey(autoGenerate = true)
     private int mId;
-    //private Long mId = null;
 
     private String mShortName;
 
     private String mDescription;
 
-    private String mDueDate; // zum Speichern in Room: Converter annotation
+    private String mDueDate;
 
     private boolean mDone;
 
@@ -35,11 +34,11 @@ public class Task implements Parcelable{
         this.mShortName = shortName;
 
 
-        String pattern = "dd.MM.yyyy";
+        /*String pattern = "dd.MM.yyyy";
         DateFormat df = new SimpleDateFormat(pattern);
 
         Date creationDate = GregorianCalendar.getInstance().getTime();
-        this.mDueDate = df.format(creationDate);
+        this.mDueDate = df.format(creationDate);*/
     }
 
     //Getters and setters for task attributes
@@ -94,6 +93,7 @@ public class Task implements Parcelable{
         }
         return false;
     }
+
 
     protected Task(Parcel in) {
         mShortName = in.readString();

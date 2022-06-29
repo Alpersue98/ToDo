@@ -1,5 +1,7 @@
 package com.example.todo;
 
+import static java.security.AccessController.getContext;
+
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -40,6 +42,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
 
     @NonNull
     @Override
+    //inflate layout and create viewHolder
     public TaskViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         TaskListItemBinding binding = TaskListItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         TaskViewHolder viewHolder = new TaskViewHolder(binding);
@@ -47,6 +50,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
     }
 
     @Override
+    //Display task info and set listeners
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
         Task task = tasks.get(position);
         holder.taskTextView.setText(task.getShortName());
@@ -66,7 +70,8 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         try{
             return tasks.size();
         }
-        catch (NullPointerException nullE){
+        catch (NullPointerException nE){
+            nE.printStackTrace();
             return 0;
         }
 

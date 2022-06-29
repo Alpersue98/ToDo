@@ -23,6 +23,7 @@ import com.example.todo.TaskListActivity;
 import com.example.todo.TaskListAdapter;
 import com.example.todo.databinding.FragmentTaskListBinding;
 import com.example.todo.model.TaskRepositoryInMemoryImpl;
+import com.example.todo.showTaskDetail.TaskDetailFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,27 +46,14 @@ public class TaskListFragment extends Fragment implements TaskListAdapter.TaskSe
     private TaskListFragmentCallbacks listener;
 
 
-    // TODO: Rename parameter arguments, choose names that match
-   // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    //private static final String ARG_PARAM1 = "param1";
-    //private static final String ARG_PARAM2 = "param2";
-//
-//    // TODO: Rename and change types of parameters
-    //private String mParam1;
-   // private String mParam2;
-
     public TaskListFragment(){
     }
 
-    public static TaskListFragment newInstance(/*String param1, String param2*/){
+
+    public static TaskListFragment newInstance(){
         TaskListFragment fragment = new TaskListFragment();
-        //Bundle args = new Bundle();
-        //args.putString(ARG_PARAM1, param1);
-        //args.putString(ARG_PARAM2, param2);
-       // fragment.setArguments(args);
         return fragment;
     }
-
 
 
     @Override
@@ -78,10 +66,13 @@ public class TaskListFragment extends Fragment implements TaskListAdapter.TaskSe
         listView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new TaskListAdapter(this);
         listView.setAdapter(adapter);
+
+        //Set listener for add task button
         binding.addTaskButton.setOnClickListener(v -> {
             addNewTask();
         });
 
+        //Create adapter for filter spinner
         Spinner dropdown = binding.FilterSpinner;
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.dropdown_array, android.R.layout.simple_spinner_item);
@@ -93,24 +84,28 @@ public class TaskListFragment extends Fragment implements TaskListAdapter.TaskSe
         return binding.getRoot();
     }
 
+    //Selection listener for filter spinner
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
-        //Set text as empty
+        //Set Spinner text as empty
         try{
             ((TextView)view).setText(null);
         }
         //Throws NullPointerException when rotating
         catch (NullPointerException nE){
-            return;
+            nE.printStackTrace();
         }
 
         switch(pos){
+            //Showing all tasks
             case 0:
                 showFilteredTasks(true);
                 break;
+            //Showing unfinished tasks
             case 1:
                 showFilteredTasks(false);
                 break;
+            //deleting finished tasks
             case 2:
                 deleteFinishedTasks();
                 break;
@@ -118,13 +113,14 @@ public class TaskListFragment extends Fragment implements TaskListAdapter.TaskSe
 
     }
 
+    //Required method for spinner adapter
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
 
+    //Method for showing all/unfinished tasks
     public void showFilteredTasks(boolean showAll) {
-
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
@@ -133,8 +129,6 @@ public class TaskListFragment extends Fragment implements TaskListAdapter.TaskSe
 
             TaskRepositoryInMemoryImpl repository = TaskRepositoryInMemoryImpl.getInstance();
             List<Task> tasks = repository.loadTasks();
-
-
 
             //If only unfinished task are supposed to be shown
             if(showAll) {
@@ -146,7 +140,6 @@ public class TaskListFragment extends Fragment implements TaskListAdapter.TaskSe
             //if all tasks are supposed to be shown
             else {
                 List<Task> finishedTasks = repository.getFinishedTasks(tasks);
-                //TODO: Sometimes doesn't update, creates lag in Tabletmode
                 handler.post(() -> {
                     setTasks(finishedTasks);
                 });
@@ -154,6 +147,7 @@ public class TaskListFragment extends Fragment implements TaskListAdapter.TaskSe
         });
     }
 
+    //Delete finished tasks from repo
     private void deleteFinishedTasks() {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
@@ -170,6 +164,7 @@ public class TaskListFragment extends Fragment implements TaskListAdapter.TaskSe
         });
     }
 
+    //Set tasks in list via list adapter
     public void setTasks(List<Task> tasks) {
         adapter.setTasks((ArrayList<Task>) tasks);
     }
@@ -179,9 +174,8 @@ public class TaskListFragment extends Fragment implements TaskListAdapter.TaskSe
         super.onAttach(context);
         try {
             listener = (TaskListFragmentCallbacks) context;
-        } catch (ClassCastException cce) {
-            throw new ClassCastException(context.toString()
-                    + " must implement TaskListFragmentCallbacks");
+        } catch (ClassCastException ccE) {
+            ccE.printStackTrace();;
         }
     }
 
@@ -198,9 +192,7 @@ public class TaskListFragment extends Fragment implements TaskListAdapter.TaskSe
     }
 
     public void addNewTask() {
-
         ((TaskListActivity)getActivity()).addNewTask();
-
     }
 
     @Override

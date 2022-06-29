@@ -21,14 +21,7 @@ import java.util.concurrent.Executors;
 
 public class TaskDetailActivity extends AppCompatActivity {
 
-    public static final String EXTRA_TASK_NAME = "EXTRA_TASK_NAME";
-
-
-    //Create list of tasks
-    //List<Task> taskList;
-
     private TaskDetailFragment tdf;
-
 
     Task currentTask;
 
@@ -40,12 +33,15 @@ public class TaskDetailActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         FragmentManager fm = getSupportFragmentManager();
+
+        //Create taskdetailfragment if Activity hasn't been accessed before
         if (savedInstanceState == null) {
             FragmentTransaction t = fm.beginTransaction();
             tdf = TaskDetailFragment.newInstance();
             t.add(R.id.taskDetailContainer, tdf);
             t.commit();
         } else {
+            //find taskdetailfragment if one has already been instantiated
             tdf = (TaskDetailFragment) fm.findFragmentById(R.id.taskDetailContainer);
         }
     }
@@ -55,18 +51,18 @@ public class TaskDetailActivity extends AppCompatActivity {
         super.onStart();
 
         Intent intent = getIntent();
+        //Get taskname and addtaskmode boolean from intent extras
         Bundle extras = intent.getExtras();
-        String extraTaskName = extras.getString("EXTRA_TASK_NAME");
+        int extraTaskID = extras.getInt("EXTRA_TASK_ID");
         boolean addTaskModeExtra = extras.getBoolean("ADD_TASK_MODE");
 
 
         if (addTaskModeExtra){
+            //create empty task to be added
             currentTask = new Task("");
             tdf.addTaskMode = true;
         }
         else {
-
-            // Asynchronous execution of db statement
             ExecutorService executor = Executors.newSingleThreadExecutor();
             Handler handler = new Handler(Looper.getMainLooper());
 
@@ -78,9 +74,7 @@ public class TaskDetailActivity extends AppCompatActivity {
                 handler.post(() -> {
                     for (int i = 0; i < taskList.size(); i++){
                         Task tempTask = taskList.get(i);
-                        //lastTaskView.append("tempTask: " + tempTask.getShortName() + "\n");
-                        if (Objects.equals(extraTaskName, tempTask.getShortName())){
-                            //lastTaskView.append("tempTaskID: " + tempTask.getId() + "\n");
+                        if (Objects.equals(extraTaskID, tempTask.getId())){
                             tdf.showTask(tempTask);
                         }
                     }

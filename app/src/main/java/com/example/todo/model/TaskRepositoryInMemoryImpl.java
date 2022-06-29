@@ -63,6 +63,7 @@ public class TaskRepositoryInMemoryImpl implements TaskRepository, Serializable 
 
 
     @Override
+    //Return all tasks in repository
     public List<Task> loadTasks() {
         return dao.getAllTasks();
     }
@@ -98,11 +99,13 @@ public class TaskRepositoryInMemoryImpl implements TaskRepository, Serializable 
     }
 
     @Override
+    //add single task to repository
     public void addTask(Task task) {
         dao.addTask(task);
     }
 
     @Override
+    //update single task in repository
     public void updateTask(Task task) {
         dao.updateTask(task);
     }
