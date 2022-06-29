@@ -39,7 +39,7 @@ public class Task implements Parcelable{
         DateFormat df = new SimpleDateFormat(pattern);
 
         Date creationDate = GregorianCalendar.getInstance().getTime();
-        this.mDueDate = df.format(creationDate);
+        //this.mDueDate = df.format(creationDate);
     }
 
     //Getters and setters for task attributes
